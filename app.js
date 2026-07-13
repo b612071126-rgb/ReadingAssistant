@@ -4,52 +4,6 @@ JSON.parse(localStorage.getItem("records"))
 
 
 
-
-if(timer)return;
-
-
-timer=setInterval(()=>{
-
-seconds++;
-
-document.getElementById("time").innerText=
-Math.floor(seconds/60);
-
-
-},1000);
-
-}
-
-
-
-function oldstopTimer(){
-
-    let archive = finishReading();
-
-
-    if(archive){
-
-        alert(
-        "阅读结束，时间："
-        +
-        archive.duration
-        +
-        "分钟"
-        );
-
-    }
-
-}
-
-clearInterval(timer);
-
-timer=null;
-
-}
-
-
-
-
 function saveReading(){
 
 
