@@ -14,74 +14,164 @@
 
 <body>
 
-<h1>📚 个人阅读与思考助手</h1>
+
+<!-- 首页 -->
+
+<section id="homePage">
 
 
-<section>
-
-<h2>新建阅读记录</h2>
-
-
-<input id="title" placeholder="文章标题">
-
-<input id="source" placeholder="来源（知乎/书籍/文章）">
+<h1>
+📚 个人阅读与思考助手
+</h1>
 
 
-<textarea id="quote"
-placeholder="摘录内容"></textarea>
+<button 
+id="startReadingBtn"
+onclick="startTimer()">
+
+开始阅读
+
+</button>
 
 
-<textarea id="thought"
-placeholder="我的思考"></textarea>
+</section>
 
 
-<input type="file" id="image">
+
+
+
+<!-- 阅读页面 -->
+
+
+<section 
+id="readingPage"
+style="display:none;">
+
+
+
+<h2>
+正在阅读
+</h2>
+
+
+
+<input 
+id="title"
+placeholder="文章标题">
+
+
+
+<input 
+id="source"
+placeholder="来源">
+
+
+<h3>
+摘录
+</h3>
+
+
+<textarea 
+id="quote"
+placeholder="记录重要内容">
+</textarea>
+
+
+
+<h3>
+思考
+</h3>
+
+
+<textarea 
+id="thought"
+placeholder="记录你的想法">
+</textarea>
+
+
+
+<h3>
+标签
+</h3>
+
+
+<button>
+AI
+</button>
+
+<button>
+心理学
+</button>
+
+<button>
+计算机
+</button>
+
+
+<br><br>
+
 
 
 <button onclick="saveReading()">
-保存阅读
+
+保存当前记录
+
 </button>
 
-
-</section>
-
-
-
-<section>
-
-<h2>阅读统计</h2>
-
-<p>
-有效阅读时间：
-<span id="time">
-0
-</span>
-分钟
-</p>
-
-
-<button onclick="startTimer()">
-开始阅读
-</button>
 
 
 <button onclick="stopTimer()">
+
 结束阅读
+
 </button>
 
 
+<p>
+
+阅读时间：
+
+<span id="time">
+
+0
+
+</span>
+
+分钟
+
+</p>
+
+
+
 </section>
 
 
 
-<section>
 
-<h2>我的阅读档案</h2>
 
-<div id="records"></div>
+
+
+<!-- 档案页面 -->
+
+
+<section 
+id="archivePage">
+
+
+<h2>
+我的阅读档案
+</h2>
+
+
+<div id="records">
+
+</div>
 
 
 </section>
+
+
+
 
 
 <script src="storage.js"></script>
@@ -91,6 +181,7 @@ placeholder="我的思考"></textarea>
 <script src="export.js"></script>
 
 <script src="app.js"></script>
+
 
 </body>
 
