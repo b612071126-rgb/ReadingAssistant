@@ -125,6 +125,22 @@ function finishReading(){
 
 
 
+// 获取已有档案
+
+let archives = loadArchives();
+
+
+// 加入新的阅读档案
+
+archives.push(currentArchive);
+
+
+// 保存
+
+saveArchives(archives);
+
+
+
     return currentArchive;
 
 }
