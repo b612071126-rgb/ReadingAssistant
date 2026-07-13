@@ -12,6 +12,10 @@ let timer = null;
 
 function oldstartTimer(){
 
+    startReading();
+
+}
+
 if(timer)return;
 
 
@@ -30,6 +34,23 @@ Math.floor(seconds/60);
 
 
 function oldstopTimer(){
+
+    let archive = finishReading();
+
+
+    if(archive){
+
+        alert(
+        "阅读结束，时间："
+        +
+        archive.duration
+        +
+        "分钟"
+        );
+
+    }
+
+}
 
 clearInterval(timer);
 
