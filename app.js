@@ -4,17 +4,6 @@ JSON.parse(localStorage.getItem("records"))
 
 
 
-let seconds = 0;
-
-let timer = null;
-
-
-
-function oldstartTimer(){
-
-    startReading();
-
-}
 
 if(timer)return;
 
