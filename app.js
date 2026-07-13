@@ -10,7 +10,7 @@ let timer = null;
 
 
 
-function startTimer(){
+function oldstartTimer(){
 
 if(timer)return;
 
@@ -29,7 +29,7 @@ Math.floor(seconds/60);
 
 
 
-function stopTimer(){
+function oldstopTimer(){
 
 clearInterval(timer);
 
