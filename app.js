@@ -4,6 +4,37 @@ JSON.parse(localStorage.getItem("records"))
 
 
 
+function startTimer(){
+
+    startReading();
+
+    alert("开始阅读");
+
+}
+
+
+
+function stopTimer(){
+
+    let archive = finishReading();
+
+
+    if(archive){
+
+        alert(
+            "阅读结束，时间："
+            +
+            archive.duration
+            +
+            "分钟"
+        );
+
+    }
+
+}
+
+
+
 function saveReading(){
 
 
