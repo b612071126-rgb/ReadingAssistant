@@ -383,3 +383,74 @@ function openHome(){
     ).style.display="block";
 
 }
+
+
+
+function showStats(){
+
+
+let count =
+records.length;
+
+
+let totalTime = 0;
+
+let quoteCount = 0;
+
+let thoughtCount = 0;
+
+
+
+records.forEach(item=>{
+
+
+totalTime += Number(item.duration) || 0;
+
+
+quoteCount +=
+(item.excerpts || []).length;
+
+
+thoughtCount +=
+(item.thoughts || []).length;
+
+
+});
+
+
+
+document.getElementById("stats").innerHTML = `
+
+
+<h3>
+我的阅读数据
+</h3>
+
+
+<p>
+累计阅读：
+${count}篇
+</p>
+
+
+<p>
+累计时间：
+${totalTime}分钟
+</p>
+
+
+<p>
+累计摘录：
+${quoteCount}条
+</p>
+
+
+<p>
+累计思考：
+${thoughtCount}条
+</p>
+
+
+`;
+
+}
