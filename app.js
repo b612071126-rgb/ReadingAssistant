@@ -15,9 +15,7 @@ function hideAllPages(){
 
 
 
-let records =
-JSON.parse(localStorage.getItem("records"))
-|| [];
+let records = loadArchives();
 
 
 
@@ -52,79 +50,6 @@ function stopTimer(){
     }
 
 }
-
-
-
-function saveReading(){
-
-
-let title =
-document.getElementById("title").value;
-
-
-let source =
-document.getElementById("source").value;
-
-
-let quote =
-document.getElementById("quote").value;
-
-
-let thought =
-document.getElementById("thought").value;
-
-
-
-let reading={
-
-
-id:Date.now(),
-
-
-title:title,
-
-
-source:source,
-
-
-quote:quote,
-
-
-thought:thought,
-
-
-time:
-Math.floor(seconds/60),
-
-
-date:
-new Date().toLocaleString()
-
-
-};
-
-
-
-records.push(reading);
-
-
-
-localStorage.setItem(
-"records",
-JSON.stringify(records)
-);
-
-
-
-alert("保存成功");
-
-
-showRecords();
-
-
-
-}
-
 
 
 
