@@ -1,5 +1,4 @@
-const STORAGE_KEY = 
-"readingArchives";
+const STORAGE_KEY = "readingArchives";
 
 
 // 保存阅读档案
