@@ -260,9 +260,24 @@ item.title+".md";
 
 a.click();
 
-
 }
 
 
 
 showRecords();
+
+function openReader(){
+
+document.getElementById(
+"readingPage"
+).style.display="block";
+
+
+document.getElementById(
+"readerPanel"
+).style.display="none";
+
+
+startTimer();
+
+}
