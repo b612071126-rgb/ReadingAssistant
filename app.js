@@ -134,6 +134,11 @@ box.innerHTML+=`
 ${item.title}
 </h3>
 
+<p>
+📅 ${
+new Date(item.startTime).toLocaleString()
+}
+</p>
 
 <p>
 来源：
@@ -216,8 +221,7 @@ ${item.source}
 
 
 日期：
-${item.date}
-
+${new Date(item.startTime).toLocaleString()}
 
 
 ## 摘录
