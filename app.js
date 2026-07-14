@@ -45,6 +45,9 @@ function stopTimer(){
             +
             "分钟"
         );
+        
+
+        openArchive();
 
     }
 
