@@ -75,12 +75,14 @@ color:white;
 
 .record{
 
-background:#eee;
+background:white;
 
-padding:15px;
+padding:20px;
 
-margin-top:10px;
+margin-top:15px;
 
-border-radius:8px;
+border-radius:12px;
+
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 
 }
