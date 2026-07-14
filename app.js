@@ -289,25 +289,6 @@ function openReader(){
 
 alert("openReader运行");
 
-
-hideAllPages();
-
-document.getElementById(
-"readingPage"
-).style.display="block";
-
-
-document.getElementById(
-"readerPanel"
-).style.display="none";
-
-
-startTimer();
-
-}
-
-
-
 hideAllPages();
 
 document.getElementById(
