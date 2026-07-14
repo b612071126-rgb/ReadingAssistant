@@ -241,19 +241,6 @@ function saveCurrentReading(){
 
 
 
-    let archives =
-    loadArchives();
-
-
-
-    archives.push(currentArchive);
-
-
-
-    saveArchives(archives);
-
-
-
     alert("保存成功");
 
 
