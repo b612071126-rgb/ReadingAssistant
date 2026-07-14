@@ -1,15 +1,3 @@
-function openReader(){
-
-document.getElementById("readerPanel").style.display="none";
-
-document.getElementById("readingPage").style.display="block";
-
-startReading();
-
-}
-
-
-
 let records =
 JSON.parse(localStorage.getItem("records"))
 || [];
