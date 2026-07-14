@@ -135,6 +135,56 @@ function finishReading(){
 
     currentArchive.endTime=new Date();
 
+// 获取输入框内容
+
+currentArchive.title =
+document.getElementById("title").value;
+
+
+currentArchive.source =
+document.getElementById("source").value;
+
+
+
+let quote =
+document.getElementById("quote").value;
+
+
+let thought =
+document.getElementById("thought").value;
+
+
+
+// 保存摘录
+
+if(quote){
+
+    currentArchive.excerpts.push({
+
+        content:quote,
+
+        time:new Date()
+
+    });
+
+}
+
+
+
+// 保存思考
+
+if(thought){
+
+    currentArchive.thoughts.push({
+
+        content:thought,
+
+        time:new Date()
+
+    });
+
+}
+
 
 
     let time=
