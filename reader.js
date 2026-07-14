@@ -144,3 +144,66 @@ saveArchives(archives);
     return currentArchive;
 
 }
+
+
+
+function saveCurrentReading(){
+
+    if(!currentArchive){
+
+        alert("当前没有阅读");
+
+        return;
+
+    }
+
+
+    currentArchive.title =
+    document.getElementById("title").value;
+
+
+    currentArchive.source =
+    document.getElementById("source").value;
+
+
+    let quote =
+    document.getElementById("quote").value;
+
+
+    let thought =
+    document.getElementById("thought").value;
+
+
+
+    if(quote){
+
+        addExcerpt(quote);
+
+    }
+
+
+    if(thought){
+
+        addThought(thought);
+
+    }
+
+
+
+    let archives =
+    loadArchives();
+
+
+
+    archives.push(currentArchive);
+
+
+
+    saveArchives(archives);
+
+
+
+    alert("保存成功");
+
+
+}
