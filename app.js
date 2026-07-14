@@ -370,3 +370,16 @@ showRecords();
 
 
 }
+
+
+
+function openHome(){
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "readerPanel"
+    ).style.display="block";
+
+}
