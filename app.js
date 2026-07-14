@@ -287,8 +287,6 @@ showRecords();
 
 function openReader(){
 
-alert("openReader运行");
-
 hideAllPages();
 
 document.getElementById(
