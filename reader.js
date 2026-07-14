@@ -5,39 +5,7 @@ let currentArchive = null;
 
 function startReading(){
 
-    currentArchive.title =
-document.getElementById("title").value;
-
-
-currentArchive.source =
-document.getElementById("source").value;
-
-
-let quote =
-document.getElementById("quote").value;
-
-
-let thought =
-document.getElementById("thought").value;
-
-
-
-if(quote){
-
-addExcerpt(quote);
-
-}
-
-
-if(thought){
-
-addThought(thought);
-
-}
-
-
-
-currentArchive = {
+    currentArchive = {
 
         id: Date.now(),
 
@@ -60,12 +28,12 @@ currentArchive = {
     };
 
 
-    console.log("开始阅读", currentArchive);
+    console.log(
+        "开始阅读",
+        currentArchive
+    );
 
 }
-
-
-
 // 添加摘录
 
 function addExcerpt(content){
@@ -77,6 +45,7 @@ function addExcerpt(content){
         return;
 
     }
+
 
 
     currentArchive.excerpts.push({
