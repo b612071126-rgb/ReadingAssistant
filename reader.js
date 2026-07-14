@@ -5,7 +5,39 @@ let currentArchive = null;
 
 function startReading(){
 
-    currentArchive = {
+    currentArchive.title =
+document.getElementById("title").value;
+
+
+currentArchive.source =
+document.getElementById("source").value;
+
+
+let quote =
+document.getElementById("quote").value;
+
+
+let thought =
+document.getElementById("thought").value;
+
+
+
+if(quote){
+
+addExcerpt(quote);
+
+}
+
+
+if(thought){
+
+addThought(thought);
+
+}
+
+
+
+currentArchive = {
 
         id: Date.now(),
 
