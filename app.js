@@ -143,7 +143,7 @@ ${item.source}
 
 <p>
 阅读时间：
-${item.time}
+${item.duration}
 分钟
 </p>
 
@@ -152,9 +152,12 @@ ${item.time}
 摘录
 </h4>
 
-
 <p>
-${item.quote}
+${
+item.excerpts
+.map(e=>e.content)
+.join("<br>")
+}
 </p>
 
 
@@ -162,11 +165,13 @@ ${item.quote}
 思考
 </h4>
 
-
 <p>
-${item.thought}
+${
+item.thoughts
+.map(t=>t.content)
+.join("<br>")
+}
 </p>
-
 
 <button onclick="exportMarkdown(${item.id})">
 导出Markdown
