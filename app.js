@@ -1,3 +1,20 @@
+function hideAllPages(){
+
+    document.getElementById("readerPanel")
+    .style.display="none";
+
+
+    document.getElementById("readingPage")
+    .style.display="none";
+
+
+    document.getElementById("archivePage")
+    .style.display="none";
+
+}
+
+
+
 let records =
 JSON.parse(localStorage.getItem("records"))
 || [];
@@ -268,6 +285,8 @@ showRecords();
 
 function openReader(){
 
+hideAllPages();
+
 document.getElementById(
 "readingPage"
 ).style.display="block";
@@ -279,5 +298,21 @@ document.getElementById(
 
 
 startTimer();
+
+}
+
+
+
+function openArchive(){
+
+hideAllPages();
+
+
+document.getElementById(
+"archivePage"
+).style.display="block";
+
+
+showRecords();
 
 }
