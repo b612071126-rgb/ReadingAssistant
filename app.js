@@ -177,6 +177,9 @@ item.thoughts
 导出Markdown
 </button>
 
+<button onclick="deleteArchive(${item.id})">
+删除
+</button>
 
 </div>
 
@@ -220,21 +223,29 @@ ${item.date}
 ## 摘录
 
 
-${item.quote}
+${
+item.excerpts
+.map(e=>e.content)
+.join("<br>")
+}
 
 
 
 ## 我的思考
 
 
-${item.thought}
+${
+item.thoughts
+.map(t=>t.content)
+.join("<br>")
+}
 
 
 
 ## 阅读时间
 
 
-${item.time}分钟
+${item.duration}分钟
 
 `;
 
@@ -305,5 +316,36 @@ document.getElementById(
 
 
 showRecords();
+
+}
+
+
+
+function deleteArchive(id){
+
+
+let result =
+confirm("确定删除这个阅读档案吗？");
+
+
+if(!result){
+
+return;
+
+}
+
+
+records =
+records.filter(
+item=>item.id!==id
+);
+
+
+
+saveArchives(records);
+
+
+showRecords();
+
 
 }
