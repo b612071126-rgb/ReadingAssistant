@@ -210,6 +210,9 @@ function updateCurrentArchive(){
     ).value;
 
 
+currentArchive.tags =
+[...selectedTags];
+
 
     let quote =
 
