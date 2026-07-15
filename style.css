@@ -115,3 +115,32 @@ padding:10px 15px;
 font-size:16px;
 
 }
+
+
+.reading-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+.end-btn{
+
+background:red;
+
+color:white;
+
+border:none;
+
+padding:8px 15px;
+
+border-radius:8px;
+
+font-size:16px;
+
+}
