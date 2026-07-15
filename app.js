@@ -437,3 +437,7 @@ ${thoughtCount}条
 `;
 
 }
+
+
+
+showStats();
