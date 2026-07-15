@@ -14,31 +14,46 @@ let selectedTags = [];
 function startReading(){
 
 
+    clearInterval(timerInterval);
+
+
+
     currentArchive = {
+
 
         id: crypto.randomUUID(),
 
+
         title:"",
+
 
         source:"",
 
+
         startTime:new Date(),
+
 
         endTime:null,
 
+
         duration:0,
+
 
         excerpts:[],
 
+
         thoughts:[],
 
+
         tags:[]
+
 
     };
 
 
 
-    selectedTags = [];
+    selectedTags=[];
+
 
     updateTags();
 
@@ -48,31 +63,26 @@ function startReading(){
 
 
 
-    console.log(
-        "开始阅读",
-        currentArchive
-    );
-
 }
 
 
 
 
 
+
+
+
 // ======================
-// 计时
+// 计时器
 // ======================
 
 
 function startTimer(){
 
 
-    clearInterval(timerInterval);
-
-
-
     timerInterval =
-    setInterval(()=>{
+    setInterval(function(){
+
 
 
         if(!currentArchive){
@@ -83,14 +93,21 @@ function startTimer(){
 
 
 
+
         let seconds =
+
         Math.floor(
-            (Date.now()
-            -
-            currentArchive.startTime)
-            /
-            1000
+
+        (Date.now()
+        -
+        currentArchive.startTime)
+
+        /
+
+        1000
+
         );
+
 
 
 
@@ -101,7 +118,7 @@ function startTimer(){
 
         let m =
         Math.floor(
-            (seconds%3600)/60
+            seconds%3600/60
         );
 
 
@@ -111,18 +128,32 @@ function startTimer(){
 
 
 
-        document.getElementById("time")
-        .innerHTML =
+        let time =
+        document.getElementById("time");
 
 
-        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+        if(time){
+
+
+            time.innerHTML =
+
+            `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+
+        }
+
 
 
 
     },1000);
 
 
+
 }
+
+
+
 
 
 
@@ -137,6 +168,7 @@ function startTimer(){
 function selectTag(tag){
 
 
+
     if(
         selectedTags.includes(tag)
     ){
@@ -148,7 +180,9 @@ function selectTag(tag){
         );
 
 
-    }else{
+    }
+
+    else{
 
 
         selectedTags.push(tag);
@@ -175,7 +209,6 @@ function updateTags(){
     );
 
 
-
     if(!box){
 
         return;
@@ -185,6 +218,7 @@ function updateTags(){
 
 
     box.innerHTML =
+
     selectedTags.length
 
     ?
@@ -195,7 +229,6 @@ function updateTags(){
 
     "无";
 
-
 }
 
 
@@ -203,96 +236,48 @@ function updateTags(){
 
 
 
-// ======================
-// 添加摘录
-// ======================
-
-
-function addExcerpt(content){
-
-
-    if(!currentArchive){
-
-        return;
-
-    }
-
-
-
-    currentArchive.excerpts.push({
-
-        content:content,
-
-        time:new Date()
-
-    });
-
-
-}
-
-
-
 
 
 
 // ======================
-// 添加思考
+// 收集输入
 // ======================
 
 
-function addThought(content){
-
-
-    if(!currentArchive){
-
-        return;
-
-    }
-
-
-
-    currentArchive.thoughts.push({
-
-        content:content,
-
-        time:new Date()
-
-    });
-
-
-}
-
-
-
-
-
-
-// ======================
-// 获取输入
-// ======================
-
-
-function collectInput(){
+function collectReading(){
 
 
     currentArchive.title =
-    document.getElementById("title").value;
+
+    document.getElementById(
+        "title"
+    ).value;
 
 
 
     currentArchive.source =
-    document.getElementById("source").value;
+
+    document.getElementById(
+        "source"
+    ).value;
 
 
 
 
     let quote =
-    document.getElementById("quote").value;
+
+    document.getElementById(
+        "quote"
+    ).value;
 
 
 
     let thought =
-    document.getElementById("thought").value;
+
+    document.getElementById(
+        "thought"
+    ).value;
+
 
 
 
@@ -300,17 +285,38 @@ function collectInput(){
     if(quote){
 
 
-        addExcerpt(quote);
+        currentArchive.excerpts.push({
+
+
+            content:quote,
+
+
+            time:new Date()
+
+
+        });
 
 
     }
 
 
 
+
+
+
     if(thought){
 
 
-        addThought(thought);
+        currentArchive.thoughts.push({
+
+
+            content:thought,
+
+
+            time:new Date()
+
+
+        });
 
 
     }
@@ -329,6 +335,10 @@ function collectInput(){
 
 
 
+
+
+
+
 // ======================
 // 保存并开始下一篇
 // ======================
@@ -339,7 +349,7 @@ function saveCurrentReading(){
 
     if(!currentArchive){
 
-        alert("当前没有阅读");
+        alert("请先开始阅读");
 
         return;
 
@@ -347,23 +357,33 @@ function saveCurrentReading(){
 
 
 
-    collectInput();
+
+    collectReading();
 
 
 
     currentArchive.duration =
+
     Math.floor(
-        (Date.now()
-        -
-        currentArchive.startTime)
-        /
-        1000
+
+    (Date.now()
+    -
+    currentArchive.startTime)
+
+    /
+
+    1000
+
     );
+
+
 
 
 
     let archives =
     loadArchives();
+
+
 
 
 
@@ -377,121 +397,39 @@ function saveCurrentReading(){
 
 
 
-    saveArchives(archives);
-
-
-
-
-    alert("保存成功，开始下一篇阅读");
-
-
-
-    resetReading();
-
-
-
-}
-
-
-
-
-
-
-// ======================
-// 结束阅读
-// ======================
-
-
-function finishReading(){
-
-
-
-    if(!currentArchive){
-
-        return null;
-
-    }
-
-
-
-    collectInput();
-
-
-
-    currentArchive.endTime =
-    new Date();
-
-
-
-    currentArchive.duration =
-    Math.floor(
-        (currentArchive.endTime
-        -
-        currentArchive.startTime)
-        /
-        1000
-    );
-
-
-
-    clearInterval(timerInterval);
-
-
-
-    let archives =
-    loadArchives();
-
-
-
-    archives.push(
-
-        JSON.parse(
-            JSON.stringify(currentArchive)
-        )
-
-    );
-
 
 
     saveArchives(archives);
 
 
 
-    return currentArchive;
 
 
-}
-
-
-
-
+    alert(
+        "保存成功，开始下一篇阅读"
+    );
 
 
 
-// ======================
-// 重置开始下一篇
-// ======================
 
 
-function resetReading(){
-
-
-
-    document.getElementById("title").value="";
-
-    document.getElementById("source").value="";
-
-    document.getElementById("quote").value="";
-
-    document.getElementById("thought").value="";
-
-
-
-    currentArchive=null;
+    clearReading();
 
 
 
     startReading();
 
 
+
 }
+
+
+
+
+
+
+
+
+
+// ======================
+// 
