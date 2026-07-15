@@ -432,4 +432,137 @@ function saveCurrentReading(){
 
 
 // ======================
-// 
+// 结束阅读
+// ======================
+
+
+function stopTimer(){
+
+
+    if(!currentArchive){
+
+        alert("当前没有阅读");
+
+        return;
+
+    }
+
+
+
+
+    collectReading();
+
+
+
+
+    currentArchive.endTime =
+    new Date();
+
+
+
+
+    currentArchive.duration =
+
+    Math.floor(
+
+    (currentArchive.endTime
+    -
+    currentArchive.startTime)
+
+    /
+
+    1000
+
+    );
+
+
+
+
+
+    let archives =
+    loadArchives();
+
+
+
+
+
+    archives.push(
+
+        JSON.parse(
+            JSON.stringify(currentArchive)
+        )
+
+    );
+
+
+
+
+
+    saveArchives(archives);
+
+
+
+
+
+    clearInterval(timerInterval);
+
+
+
+
+    openArchive();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================
+// 清空输入
+// ======================
+
+
+function clearReading(){
+
+
+
+    document.getElementById("title").value="";
+
+
+    document.getElementById("source").value="";
+
+
+    document.getElementById("quote").value="";
+
+
+    document.getElementById("thought").value="";
+
+
+
+    selectedTags=[];
+
+
+    updateTags();
+
+
+
+    let time =
+    document.getElementById("time");
+
+
+
+    if(time){
+
+        time.innerHTML="00:00:00";
+
+    }
+
+
+
+}
