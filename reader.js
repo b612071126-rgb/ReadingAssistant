@@ -316,7 +316,7 @@ function saveCurrentReading(){
 
 
 
-    archives.push(
+    archives.unshift(
 
         JSON.parse(
             JSON.stringify(
@@ -444,7 +444,7 @@ function finishReading(){
 
 
 
-    archives.push(
+    archives.unshift(
 
         JSON.parse(
             JSON.stringify(
