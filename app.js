@@ -417,7 +417,8 @@ ${count}篇
 
 <p>
 累计时间：
-${totalTime}分钟
+${Math.floor(totalTime/3600)}小时
+${Math.floor((totalTime%3600)/60)}分钟
 </p>
 
 
