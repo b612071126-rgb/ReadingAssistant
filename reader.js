@@ -1,9 +1,14 @@
 let currentArchive = null;
 
+let saved = false;
+
 
 // 开始阅读
 
 function startReading(){
+
+    saved = false;
+
 
     currentArchive = {
 
@@ -34,6 +39,9 @@ function startReading(){
     );
 
 }
+
+
+
 // 添加摘录
 
 function addExcerpt(content){
@@ -45,7 +53,6 @@ function addExcerpt(content){
         return;
 
     }
-
 
 
     currentArchive.excerpts.push({
@@ -87,116 +94,8 @@ function addThought(content){
 
 
 
-// 结束阅读
 
-function finishReading(){
-
-
-    if(!currentArchive){
-
-        alert("当前没有阅读");
-
-        return null;
-
-    }
-
-
-
-    currentArchive.endTime=new Date();
-
-// 获取输入框内容
-
-currentArchive.title =
-document.getElementById("title").value;
-
-
-currentArchive.source =
-document.getElementById("source").value;
-
-
-
-let quote =
-document.getElementById("quote").value;
-
-
-let thought =
-document.getElementById("thought").value;
-
-
-
-// 保存摘录
-
-if(quote){
-
-    currentArchive.excerpts.push({
-
-        content:quote,
-
-        time:new Date()
-
-    });
-
-}
-
-
-
-// 保存思考
-
-if(thought){
-
-    currentArchive.thoughts.push({
-
-        content:thought,
-
-        time:new Date()
-
-    });
-
-}
-
-
-
-    let time=
-
-    currentArchive.endTime
-
-    -
-
-    currentArchive.startTime;
-
-
-
-    currentArchive.duration=
-
-    Math.floor(time/1000);
-
-
-
-    console.log("阅读结束",currentArchive);
-
-
-
-// 获取已有档案
-
-let archives = loadArchives();
-
-
-// 加入新的阅读档案
-
-archives.push(currentArchive);
-
-
-// 保存
-
-saveArchives(archives);
-
-
-
-    return currentArchive;
-
-}
-
-
+// 保存当前阅读
 
 function saveCurrentReading(){
 
@@ -209,12 +108,14 @@ function saveCurrentReading(){
     }
 
 
+
     currentArchive.title =
     document.getElementById("title").value;
 
 
     currentArchive.source =
     document.getElementById("source").value;
+
 
 
     let quote =
@@ -241,7 +142,133 @@ function saveCurrentReading(){
 
 
 
+    let archives =
+    loadArchives();
+
+
+
+    archives.push(currentArchive);
+
+
+
+    saveArchives(archives);
+
+
+
+    saved=true;
+
+
+
     alert("保存成功");
 
+
+}
+
+
+
+
+
+// 结束阅读
+
+function finishReading(){
+
+
+    if(!currentArchive){
+
+        alert("当前没有阅读");
+
+        return null;
+
+    }
+
+
+
+    currentArchive.endTime =
+    new Date();
+
+
+
+    currentArchive.title =
+    document.getElementById("title").value;
+
+
+
+    currentArchive.source =
+    document.getElementById("source").value;
+
+
+
+
+    let quote =
+    document.getElementById("quote").value;
+
+
+    let thought =
+    document.getElementById("thought").value;
+
+
+
+    if(quote){
+
+        currentArchive.excerpts.push({
+
+            content:quote,
+
+            time:new Date()
+
+        });
+
+    }
+
+
+
+    if(thought){
+
+        currentArchive.thoughts.push({
+
+            content:thought,
+
+            time:new Date()
+
+        });
+
+    }
+
+
+
+    let time =
+    currentArchive.endTime -
+    currentArchive.startTime;
+
+
+
+    currentArchive.duration =
+    Math.floor(time/1000);
+
+
+
+
+    let archives =
+    loadArchives();
+
+
+
+    if(!saved){
+
+        archives.push(currentArchive);
+
+        saveArchives(archives);
+
+    }
+
+
+
+    console.log(
+        "阅读结束",
+        currentArchive
+    );
+
+
+    return currentArchive;
 
 }
