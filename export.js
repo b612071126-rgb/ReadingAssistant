@@ -128,18 +128,18 @@ ${(item.images || []).length}
 
 
     let blob =
-    new Blob(
+new Blob(
 
-        [markdown],
+[
+"\ufeff"+markdown
+],
 
-        {
-            type:
-            "text/markdown;charset=utf-8"
-        }
+{
+type:
+"text/markdown;charset=utf-8"
+}
 
-    );
-
-
+);
 
 
 
