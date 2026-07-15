@@ -2,12 +2,18 @@
 <html lang="zh-CN">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>个人阅读与思考助手1</title>
+<title>
+个人阅读与思考助手
+</title>
+
 
 <link rel="stylesheet" href="style.css">
+
 
 </head>
 
@@ -15,16 +21,19 @@
 <body>
 
 
+
 <!-- 首页 -->
 
 <section id="readerPanel">
+
 
 <h1>
 📚 个人阅读与思考助手
 </h1>
 
 
-<button 
+
+<button
 id="startReadingBtn"
 onclick="openReader()">
 
@@ -32,13 +41,21 @@ onclick="openReader()">
 
 </button>
 
+
+
 <div id="stats">
 
 </div>
 
+
+
 <button onclick="openArchive()">
+
 我的档案
+
 </button>
+
+
 
 </section>
 
@@ -54,25 +71,24 @@ id="readingPage"
 style="display:none;">
 
 
+
 <div class="top-nav">
 
+
 <button onclick="goBack()">
+
 ←
+
 </button>
+
 
 
 <button onclick="openHome()">
+
 🏠
+
 </button>
 
-
-</div>
-
-
-
-<h2>
-正在阅读
-</h2>
 
 
 <button 
@@ -88,72 +104,19 @@ onclick="stopTimer()">
 
 
 
-<input 
-id="title"
-placeholder="文章标题">
+
+
+<h2>
+
+正在阅读
+
+</h2>
 
 
 
-<input 
-id="source"
-placeholder="来源">
 
 
-<h3>
-摘录
-</h3>
-
-
-<textarea 
-id="quote"
-placeholder="记录重要内容">
-</textarea>
-
-
-
-<h3>
-思考
-</h3>
-
-
-<textarea 
-id="thought"
-placeholder="记录你的想法">
-</textarea>
-
-
-
-<h3>
-标签
-</h3>
-
-
-<button>
-AI
-</button>
-
-<button>
-心理学
-</button>
-
-<button>
-计算机
-</button>
-
-
-<br><br>
-
-
-
-<button onclick="saveCurrentReading()">
-
-保存当前记录
-
-</button>
-
-
-
-<p>
+<div class="time-box">
 
 阅读时间：
 
@@ -163,10 +126,166 @@ AI
 
 </span>
 
+
+</div>
+
+
+
+
+
+<input
+
+id="title"
+
+placeholder="文章标题"
+
+>
+
+
+
+
+<input
+
+id="source"
+
+placeholder="来源"
+
+>
+
+
+
+
+
+<h3>
+
+摘录
+
+</h3>
+
+
+
+<textarea
+
+id="quote"
+
+placeholder="记录重要内容">
+
+</textarea>
+
+
+
+
+
+<h3>
+
+思考
+
+</h3>
+
+
+
+<textarea
+
+id="thought"
+
+placeholder="记录你的想法">
+
+</textarea>
+
+
+
+
+
+
+
+<h3>
+
+标签
+
+</h3>
+
+
+
+<div id="tagBox">
+
+
+<button onclick="selectTag('AI')">
+
+AI
+
+</button>
+
+
+
+<button onclick="selectTag('心理学')">
+
+心理学
+
+</button>
+
+
+
+<button onclick="selectTag('计算机')">
+
+计算机
+
+</button>
+
+
+
+<button onclick="selectTag('哲学')">
+
+哲学
+
+</button>
+
+
+
+<button onclick="selectTag('学习方法')">
+
+学习方法
+
+</button>
+
+
+
+</div>
+
+
+
+
+<p>
+
+已选择标签：
+
+<span id="selectedTags">
+
+无
+
+</span>
+
+
 </p>
 
 
+
+
+
+
+
+<button onclick="saveCurrentReading()">
+
+保存并开始下一篇
+
+</button>
+
+
+
+
+
 </section>
+
+
 
 
 
@@ -177,29 +296,48 @@ AI
 <!-- 档案页面 -->
 
 
-<section 
+<section
+
 id="archivePage"
+
 style="display:none;">
+
+
+
 
 
 <div class="top-nav">
 
+
 <button onclick="goBack()">
+
 ←
+
 </button>
 
 
+
 <button onclick="openHome()">
+
 🏠
+
 </button>
 
 
 </div>
 
 
+
+
+
+
 <h2>
+
 我的阅读档案
+
 </h2>
+
+
 
 
 
@@ -208,7 +346,13 @@ style="display:none;">
 </div>
 
 
+
+
+
 </section>
+
+
+
 
 
 
@@ -223,6 +367,8 @@ style="display:none;">
 <script src="app.js"></script>
 
 
+
 </body>
+
 
 </html>
