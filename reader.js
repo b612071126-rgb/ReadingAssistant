@@ -295,6 +295,10 @@ clearInterval(timerInterval);
     Math.floor(time/1000);
 
 
+console.log(
+"最终保存时间",
+currentArchive.duration
+);
 
 
     let archives =
