@@ -2,6 +2,7 @@ let currentArchive = null;
 
 let saved = false;
 
+let timerInterval = null;
 
 // 开始阅读
 
@@ -31,6 +32,44 @@ function startReading(){
         tags:[]
 
     };
+
+
+
+let start = Date.now();
+
+
+timerInterval = setInterval(()=>{
+
+
+let seconds =
+Math.floor(
+(Date.now()-start)/1000
+);
+
+
+
+let h =
+Math.floor(seconds/3600);
+
+
+let m =
+Math.floor(
+(seconds%3600)/60
+);
+
+
+let s =
+seconds%60;
+
+
+
+document.getElementById("time").innerHTML =
+
+`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+
+},1000);
+
 
 
     console.log(
@@ -181,7 +220,17 @@ function finishReading(){
 
     }
 
+if(!currentArchive){
 
+    alert("当前没有阅读");
+
+    return null;
+
+}
+
+
+
+clearInterval(timerInterval);
 
     currentArchive.endTime =
     new Date();
