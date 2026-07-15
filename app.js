@@ -122,6 +122,7 @@ archive.duration%60
 
 function showRecords(){
 
+records = loadArchives();
 
 let box=
 document.getElementById("records");
