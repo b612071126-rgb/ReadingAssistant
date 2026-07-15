@@ -248,9 +248,8 @@ item.thoughts
 
 ## 阅读时间
 
-
-${item.duration}分钟
-
+${Math.floor(item.duration/60)}分
+${item.duration%60}秒
 `;
 
 
