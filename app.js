@@ -28,7 +28,7 @@ JSON.parse(localStorage.getItem("records"))
 
 if(
     oldRecords.length > 0 &&
-    records.length === 0
+    records.length === 0 &&
     !localStorage.getItem("migrated")
 ){
 
