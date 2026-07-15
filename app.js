@@ -1,5 +1,6 @@
 let lastPage = "readerPanel";
 
+let currentPage = "readerPanel";
 
 var selectedTags = [];
 
@@ -69,7 +70,13 @@ function hideAllPages(){
 function openHome(){
 
 
-    hideAllPages();
+lastPage=currentPage;
+
+
+    currentPage="readerPanel";
+
+  
+  hideAllPages();
 
 
 
@@ -99,7 +106,10 @@ function openHome(){
 function openReader(){
 
 
-    lastPage="readerPanel";
+    lastPage = currentPage;
+
+
+    currentPage="readingPage";
 
 
     hideAllPages();
@@ -119,10 +129,7 @@ function openReader(){
     startReading();
 
 
-
 }
-
-
 
 
 
@@ -167,11 +174,11 @@ function goBack(){
 function openArchive(){
 
 
-    lastPage="readerPanel";
+    lastPage=currentPage;
 
-
-
-    hideAllPages();
+currentPage="archivePage";
+  
+  hideAllPages();
 
 
 
