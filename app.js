@@ -100,12 +100,16 @@ function stopTimer(){
     if(archive){
 
         alert(
-            "阅读结束，时间："
-            +
-            archive.duration
-            +
-            "分钟"
-        );
+"阅读结束，时间："
++
+Math.floor(archive.duration/60)
++
+"分"
++
+archive.duration%60
++
+"秒"
+);
         
 
         openArchive();
