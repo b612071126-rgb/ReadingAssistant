@@ -15,106 +15,111 @@ function hideAllPages(){
 
 
 
-let lastPage="readerPanel";
+let lastPage = "readerPanel";
 
-let records = loadArchives();
-
-
-
-// 迁移旧数据
-
-let oldRecords =
-JSON.parse(localStorage.getItem("records"))
-|| [];
+let records = [];
 
 
-if(
-    oldRecords.length > 0 &&
-    records.length === 0 &&
-    !localStorage.getItem("migrated")
-){
 
-    records = oldRecords.map(item=>{
+// 初始化
 
+function initApp(){
 
-        return {
+    records = loadArchives();
 
-            id:item.id,
+    showRecords();
 
-            title:item.title,
-
-            source:item.source,
-
-            startTime:new Date(),
-
-            endTime:new Date(),
-
-            duration:item.time || 0,
-
-            excerpts:[
-                {
-                    content:item.quote || "",
-                    time:new Date()
-                }
-            ],
-
-            thoughts:[
-                {
-                    content:item.thought || "",
-                    time:new Date()
-                }
-            ],
-
-            tags:[]
-
-        };
-
-
-    });
-
-
-    saveArchives(records);
-
-localStorage.setItem(
-    "migrated",
-    "true"
-);
+    showStats();
 
 }
 
 
 
-function startTimer(){
+initApp();
+
+
+
+
+
+
+// =====================
+// 打开阅读
+// =====================
+
+
+function openReader(){
+
+
+    lastPage = "readerPanel";
+
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "readingPage"
+    ).style.display="block";
+
+
 
     startReading();
 
-    alert("开始阅读");
 
 }
 
 
 
-function stopTimer(){
-
-    let archive = finishReading();
 
 
-    if(archive){
 
-        alert(
-"阅读结束，时间："
-+
-Math.floor(archive.duration/60)
-+
-"分"
-+
-archive.duration%60
-+
-"秒"
-);
-        
+// =====================
+// 打开档案
+// =====================
 
-        openArchive();
+
+function openArchive(){
+
+
+    lastPage = "readerPanel";
+
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "archivePage"
+    ).style.display="block";
+
+
+
+    showRecords();
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// 返回
+// =====================
+
+
+function goBack(){
+
+
+    if(lastPage){
+
+        hideAllPages();
+
+
+        document.getElementById(
+            lastPage
+        ).style.display="block";
+
 
     }
 
@@ -122,252 +127,11 @@ archive.duration%60
 
 
 
-function showRecords(){
-
-records = loadArchives();
-
-let box=
-document.getElementById("records");
-
-
-box.innerHTML="";
-
-
-
-records.forEach(item=>{
-
-
-box.innerHTML+=`
-
-<div class="record">
-
-
-<h3>
-${item.title}
-</h3>
-
-<p>
-📅 ${
-new Date(item.startTime).toLocaleString()
-}
-</p>
-
-<p>
-来源：
-${item.source}
-</p>
-
-
-<p>
-阅读时间：
-${Math.floor(item.duration/60)}分
-${item.duration%60}秒
-</p>
-
-
-<h4>
-摘录
-</h4>
-
-<p>
-${
-item.excerpts
-.map(e=>e.content)
-.join("<br>")
-}
-</p>
-
-
-<h4>
-思考
-</h4>
-
-<p>
-${
-item.thoughts
-.map(t=>t.content)
-.join("<br>")
-}
-</p>
-
-<button onclick="exportMarkdown(${item.id})">
-导出Markdown
-</button>
-
-<button onclick="deleteArchive(${item.id})">
-删除
-</button>
-
-</div>
-
-
-`;
-
-
-});
-
-
-}
-
-
-
-
-
-function exportMarkdown(id){
-
-
-let item =
-records.find(
-r=>r.id===id
-);
-
-
-
-let md=`
-
-# ${item.title}
-
-
-来源：
-${item.source}
-
-
-日期：
-${new Date(item.startTime).toLocaleString()}
-
-
-## 摘录
-
-
-${
-item.excerpts
-.map(e=>e.content)
-.join("<br>")
-}
-
-
-
-## 我的思考
-
-
-${
-item.thoughts
-.map(t=>t.content)
-.join("<br>")
-}
-
-
-
-## 阅读时间
-
-${Math.floor(item.duration/60)}分
-${item.duration%60}秒
-`;
-
-
-
-let blob=
-new Blob(
-[md],
-{
-type:"text/markdown"
-}
-);
-
-
-
-let url=
-URL.createObjectURL(blob);
-
-
-
-let a=
-document.createElement("a");
-
-
-a.href=url;
-
-
-a.download=
-item.title+".md";
-
-
-a.click();
-
-}
-
-
-
-showRecords();
-
-function openReader(){
-
-hideAllPages();
-
-document.getElementById(
-"readingPage"
-).style.display="block";
-
-
-document.getElementById(
-"readerPanel"
-).style.display="none";
-
-
-startTimer();
-
-}
-
-
-
-function openArchive(){
-
-hideAllPages();
-
-
-document.getElementById(
-"archivePage"
-).style.display="block";
-
-
-showRecords();
-
-}
-
-
-
-function deleteArchive(id){
-
-
-let result =
-confirm("确定删除这个阅读档案吗？");
-
-
-if(!result){
-
-return;
-
-}
-
-
-records =
-records.filter(
-item=>item.id!==id
-);
-
-
-
-saveArchives(records);
-
-
-showRecords();
-
-
-}
 
 
 
 function openHome(){
+
 
     hideAllPages();
 
@@ -376,44 +140,266 @@ function openHome(){
         "readerPanel"
     ).style.display="block";
 
+
 }
 
+
+
+
+
+
+
+
+
+// =====================
+// 档案显示
+// =====================
+
+
+function showRecords(){
+
+
+    records = loadArchives();
+
+
+
+    let box =
+    document.getElementById("records");
+
+
+
+    if(!box){
+
+        return;
+
+    }
+
+
+
+    box.innerHTML="";
+
+
+
+
+    records.forEach(item=>{
+
+
+        box.innerHTML += `
+
+
+
+<div class="record">
+
+
+<h3>
+
+${item.title}
+
+</h3>
+
+
+<p>
+📅
+${new Date(item.startTime).toLocaleString()}
+</p>
+
+
+
+<p>
+
+来源：
+
+${item.source}
+
+</p>
+
+
+
+<p>
+
+⏱
+
+${Math.floor(item.duration/60)}分
+
+${item.duration%60}秒
+
+</p>
+
+
+
+<p>
+
+🏷
+
+${(item.tags || []).join(" ")}
+
+</p>
+
+
+
+
+<h4>
+
+摘录
+
+</h4>
+
+
+<p>
+
+${
+
+(item.excerpts||[])
+.map(e=>e.content)
+.join("<br>")
+
+}
+
+</p>
+
+
+
+
+<h4>
+
+思考
+
+</h4>
+
+
+
+<p>
+
+${
+
+(item.thoughts||[])
+.map(t=>t.content)
+.join("<br>")
+
+}
+
+</p>
+
+
+
+<button onclick="deleteArchive('${item.id}')">
+
+删除
+
+</button>
+
+
+
+<button onclick="exportMarkdown('${item.id}')">
+
+导出Markdown
+
+</button>
+
+
+
+</div>
+
+
+
+`;
+
+
+
+    });
+
+
+}
+
+
+
+
+
+
+
+
+// =====================
+// 删除
+// =====================
+
+
+function deleteArchive(id){
+
+
+    let ok =
+    confirm(
+        "确定删除吗？"
+    );
+
+
+    if(!ok){
+
+        return;
+
+    }
+
+
+
+    records =
+    records.filter(
+        item=>item.id!==id
+    );
+
+
+
+    saveArchives(records);
+
+
+
+    showRecords();
+
+
+    showStats();
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// 数据统计
+// =====================
 
 
 function showStats(){
 
 
-let count =
-records.length;
-
-
-let totalTime = 0;
-
-let quoteCount = 0;
-
-let thoughtCount = 0;
+    let stats =
+    document.getElementById("stats");
 
 
 
-records.forEach(item=>{
+    if(!stats){
 
+        return;
 
-totalTime += Number(item.duration) || 0;
-
-
-quoteCount +=
-(item.excerpts || []).length;
-
-
-thoughtCount +=
-(item.thoughts || []).length;
-
-
-});
+    }
 
 
 
-document.getElementById("stats").innerHTML = `
+    let totalTime=0;
+
+
+    records.forEach(item=>{
+
+        totalTime +=
+        Number(item.duration)||0;
+
+    });
+
+
+
+
+    stats.innerHTML = `
 
 
 <h3>
@@ -422,34 +408,21 @@ document.getElementById("stats").innerHTML = `
 
 
 <p>
-累计阅读：
-${count}篇
+阅读：
+${records.length}篇
 </p>
 
 
 <p>
-累计时间：
+时间：
 ${Math.floor(totalTime/3600)}小时
-${Math.floor((totalTime%3600)/60)}分钟
+${Math.floor(totalTime%3600/60)}分钟
 </p>
 
-
-<p>
-累计摘录：
-${quoteCount}条
-</p>
-
-
-<p>
-累计思考：
-${thoughtCount}条
-</p>
 
 
 `;
 
+
+
 }
-
-
-
-showStats();
