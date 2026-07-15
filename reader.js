@@ -13,7 +13,7 @@ function startReading(){
 
     currentArchive = {
 
-        id: Date.now(),
+        id: crypto.randomUUID(),
 
         title:"",
 
@@ -186,7 +186,9 @@ function saveCurrentReading(){
 
 
 
-    archives.push(currentArchive);
+    archives.push(
+    JSON.parse(JSON.stringify(currentArchive))
+);
 
 
 
