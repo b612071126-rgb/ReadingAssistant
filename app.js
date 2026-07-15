@@ -15,6 +15,8 @@ function hideAllPages(){
 
 
 
+let lastPage="readerPanel";
+
 let records = loadArchives();
 
 
