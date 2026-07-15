@@ -11,10 +11,11 @@
 个人阅读与思考助手
 </title>
 
+
 <link rel="stylesheet" href="style.css">
 
-</head>
 
+</head>
 
 
 <body>
@@ -29,6 +30,14 @@
 <h1>
 📚 个人阅读与思考助手
 </h1>
+
+
+<p id="todayQuote">
+
+阅读，让生活拥有更多可能。
+
+</p>
+
 
 
 
@@ -55,9 +64,10 @@
 
 
 
+
 <button onclick="openArchive()">
 
-我的档案
+📚 我的档案
 
 </button>
 
@@ -66,29 +76,9 @@
 
 <button onclick="openHelp()">
 
-说明与反馈
+⚙️ 说明与反馈
 
 </button>
-
-
-
-
-<div id="todayQuote">
-
-
-<h3>
-今日思考
-</h3>
-
-
-<p>
-
-阅读不是为了知道更多，而是为了看见更大的世界。
-
-</p>
-
-
-</div>
 
 
 
@@ -101,9 +91,7 @@
 
 
 
-
 <!-- 阅读页面 -->
-
 
 <section 
 id="readingPage"
@@ -119,6 +107,7 @@ style="display:none;">
 ←
 
 </button>
+
 
 
 <button onclick="openHome()">
@@ -161,9 +150,8 @@ onclick="stopTimer()">
 
 
 
+<div class="time-box">
 
-
-<p>
 
 阅读时间：
 
@@ -174,7 +162,7 @@ onclick="stopTimer()">
 </span>
 
 
-</p>
+</div>
 
 
 
@@ -188,10 +176,9 @@ placeholder="文章标题">
 
 
 
-<input
+<input 
 id="source"
 placeholder="来源">
-
 
 
 
@@ -205,9 +192,7 @@ placeholder="来源">
 </h3>
 
 
-
-
-<div id="tags">
+<div id="tagBox">
 
 
 <button onclick="selectTag('AI')">
@@ -259,11 +244,19 @@ AI
 </button>
 
 
+<button onclick="selectTag('学习方法')">
+
+学习方法
+
+</button>
+
+
 <button onclick="selectTag('其他')">
 
 其他
 
 </button>
+
 
 
 </div>
@@ -295,12 +288,12 @@ placeholder="记录重要内容">
 
 
 
+
 <h3>
 
 思考
 
 </h3>
-
 
 
 <textarea
@@ -324,7 +317,6 @@ placeholder="记录你的想法">
 </h3>
 
 
-
 <input
 
 type="file"
@@ -337,29 +329,23 @@ accept="image/*"
 
 
 
-
 <button onclick="saveImage()">
 
-📷 保存图片
+📷 保存截图
 
 </button>
 
 
 
 
-
-
-
-<br>
 
 
 
 <button onclick="saveCurrentReading()">
 
-保存当前记录
+保存当前阅读
 
 </button>
-
 
 
 
@@ -373,8 +359,8 @@ accept="image/*"
 
 
 
-<!-- 档案页面 -->
 
+<!-- 档案页面 -->
 
 <section
 
@@ -402,7 +388,6 @@ style="display:none;">
 </button>
 
 
-
 </div>
 
 
@@ -417,24 +402,22 @@ style="display:none;">
 
 
 
-
-
-<div>
+<div class="search-box">
 
 
 <input
 
 id="searchInput"
 
-placeholder="🔍 搜索阅读内容"
+placeholder="🔍 搜索标题、内容、标签"
 
 oninput="searchArchives()"
+
 
 >
 
 
 </div>
-
 
 
 
@@ -456,8 +439,7 @@ oninput="searchArchives()"
 
 
 
-<!-- 详情页面 -->
-
+<!-- 阅读详情 -->
 
 <section
 
@@ -481,12 +463,12 @@ style="display:none;">
 
 
 
+
 <h2>
 
 阅读详情
 
 </h2>
-
 
 
 <div id="detailContent">
@@ -505,8 +487,7 @@ style="display:none;">
 
 
 
-<!-- 速记页面 -->
-
+<!-- 速记 -->
 
 <section
 
@@ -540,11 +521,13 @@ style="display:none;">
 
 
 
+
 <h2>
 
 速记模式
 
 </h2>
+
 
 
 
@@ -564,14 +547,14 @@ style="display:none;">
 
 
 
-
 <textarea
 
 id="quickContent"
 
-placeholder="快速记录你的想法">
+placeholder="快速记录">
 
 </textarea>
+
 
 
 
@@ -614,9 +597,7 @@ style="display:none;">
 </button>
 
 
-
 </div>
-
 
 
 
@@ -629,9 +610,10 @@ style="display:none;">
 
 
 
+
 <p>
 
-这是一个帮助自己阅读、记录和思考的工具。
+个人阅读与思考助手
 
 </p>
 
@@ -639,7 +621,17 @@ style="display:none;">
 
 <p>
 
-反馈邮箱：
+帮助用户完成：
+
+阅读 → 摘录 → 思考 → 沉淀
+
+</p>
+
+
+
+<p>
+
+反馈方式：
 
 后续填写
 
@@ -647,8 +639,8 @@ style="display:none;">
 
 
 
-</section>
 
+</section>
 
 
 
@@ -664,7 +656,6 @@ style="display:none;">
 <script src="export.js"></script>
 
 <script src="app.js"></script>
-
 
 
 </body>
