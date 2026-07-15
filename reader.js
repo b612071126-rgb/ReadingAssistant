@@ -180,6 +180,13 @@ function saveCurrentReading(){
     }
 
 
+currentArchive.duration =
+Math.floor(
+(Date.now()-currentArchive.startTime)
+/
+1000
+);
+
 
     let archives =
     loadArchives();
@@ -221,14 +228,6 @@ function finishReading(){
         return null;
 
     }
-
-if(!currentArchive){
-
-    alert("当前没有阅读");
-
-    return null;
-
-}
 
 
 
@@ -311,6 +310,9 @@ currentArchive.duration
     if(!saved){
 
         archives.push(currentArchive);
+
+JSON.parse(JSON.stringify(currentArchive))
+    );
 
         saveArchives(archives);
 
