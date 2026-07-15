@@ -11,11 +11,10 @@
 个人阅读与思考助手
 </title>
 
-
 <link rel="stylesheet" href="style.css">
 
-
 </head>
+
 
 
 <body>
@@ -33,13 +32,20 @@
 
 
 
-<button
-id="startReadingBtn"
-onclick="openReader()">
+<button onclick="openReader()">
 
 开始阅读
 
 </button>
+
+
+
+<button onclick="openQuickNote()">
+
+✏️ 速记模式
+
+</button>
+
 
 
 
@@ -57,7 +63,40 @@ onclick="openReader()">
 
 
 
+
+<button onclick="openHelp()">
+
+说明与反馈
+
+</button>
+
+
+
+
+<div id="todayQuote">
+
+
+<h3>
+今日思考
+</h3>
+
+
+<p>
+
+阅读不是为了知道更多，而是为了看见更大的世界。
+
+</p>
+
+
+</div>
+
+
+
+
 </section>
+
+
+
 
 
 
@@ -82,12 +121,28 @@ style="display:none;">
 </button>
 
 
-
 <button onclick="openHome()">
 
 🏠
 
 </button>
+
+
+
+</div>
+
+
+
+
+
+<div class="reading-header">
+
+
+<h2>
+
+正在阅读
+
+</h2>
 
 
 
@@ -106,17 +161,9 @@ onclick="stopTimer()">
 
 
 
-<h2>
-
-正在阅读
-
-</h2>
 
 
-
-
-
-<div class="time-box">
+<p>
 
 阅读时间：
 
@@ -127,30 +174,101 @@ onclick="stopTimer()">
 </span>
 
 
+</p>
+
+
+
+
+
+<input 
+id="title"
+placeholder="文章标题">
+
+
+
+
+
+<input
+id="source"
+placeholder="来源">
+
+
+
+
+
+
+
+<h3>
+
+标签
+
+</h3>
+
+
+
+
+<div id="tags">
+
+
+<button onclick="selectTag('AI')">
+
+AI
+
+</button>
+
+
+<button onclick="selectTag('计算机')">
+
+计算机
+
+</button>
+
+
+<button onclick="selectTag('心理学')">
+
+心理学
+
+</button>
+
+
+<button onclick="selectTag('哲学')">
+
+哲学
+
+</button>
+
+
+<button onclick="selectTag('科学')">
+
+科学
+
+</button>
+
+
+<button onclick="selectTag('历史')">
+
+历史
+
+</button>
+
+
+<button onclick="selectTag('商业')">
+
+商业
+
+</button>
+
+
+<button onclick="selectTag('其他')">
+
+其他
+
+</button>
+
+
 </div>
 
 
-
-
-
-<input
-
-id="title"
-
-placeholder="文章标题"
-
->
-
-
-
-
-<input
-
-id="source"
-
-placeholder="来源"
-
->
 
 
 
@@ -163,7 +281,6 @@ placeholder="来源"
 </h3>
 
 
-
 <textarea
 
 id="quote"
@@ -171,6 +288,8 @@ id="quote"
 placeholder="记录重要内容">
 
 </textarea>
+
+
 
 
 
@@ -200,85 +319,46 @@ placeholder="记录你的想法">
 
 <h3>
 
-标签
+图片
 
 </h3>
 
 
 
-<div id="tagBox">
+<input
 
+type="file"
 
-<button onclick="selectTag('AI')">
+id="imageInput"
 
-AI
+accept="image/*"
 
-</button>
-
-
-
-<button onclick="selectTag('心理学')">
-
-心理学
-
-</button>
+>
 
 
 
-<button onclick="selectTag('计算机')">
 
-计算机
+<button onclick="saveImage()">
+
+📷 保存图片
 
 </button>
 
 
 
-<button onclick="selectTag('哲学')">
-
-哲学
-
-</button>
-
-
-
-<button onclick="selectTag('学习方法')">
-
-学习方法
-
-</button>
-
-
-
-</div>
 
 
 
 
-<p>
-
-已选择标签：
-
-<span id="selectedTags">
-
-无
-
-</span>
-
-
-</p>
-
-
-
-
+<br>
 
 
 
 <button onclick="saveCurrentReading()">
 
-保存并开始下一篇
+保存当前记录
 
 </button>
-
 
 
 
@@ -304,6 +384,136 @@ style="display:none;">
 
 
 
+<div class="top-nav">
+
+
+<button onclick="goBack()">
+
+←
+
+</button>
+
+
+
+<button onclick="openHome()">
+
+🏠
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<h2>
+
+我的阅读档案
+
+</h2>
+
+
+
+
+
+<div>
+
+
+<input
+
+id="searchInput"
+
+placeholder="🔍 搜索阅读内容"
+
+oninput="searchArchives()"
+
+>
+
+
+</div>
+
+
+
+
+
+
+<div id="records">
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 详情页面 -->
+
+
+<section
+
+id="detailPage"
+
+style="display:none;">
+
+
+
+<div class="top-nav">
+
+
+<button onclick="goBack()">
+
+←
+
+</button>
+
+
+</div>
+
+
+
+<h2>
+
+阅读详情
+
+</h2>
+
+
+
+<div id="detailContent">
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 速记页面 -->
+
+
+<section
+
+id="quickPage"
+
+style="display:none;">
+
 
 
 <div class="top-nav">
@@ -324,8 +534,88 @@ style="display:none;">
 </button>
 
 
+
 </div>
 
+
+
+
+<h2>
+
+速记模式
+
+</h2>
+
+
+
+<p>
+
+记录时间：
+
+<span id="quickTime">
+
+00:00:00
+
+</span>
+
+
+</p>
+
+
+
+
+
+<textarea
+
+id="quickContent"
+
+placeholder="快速记录你的想法">
+
+</textarea>
+
+
+
+<button onclick="saveQuickNote()">
+
+保存速记
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 说明反馈 -->
+
+
+<section
+
+id="helpPage"
+
+style="display:none;">
+
+
+
+<div class="top-nav">
+
+
+<button onclick="goBack()">
+
+←
+
+</button>
+
+
+
+</div>
 
 
 
@@ -333,23 +623,32 @@ style="display:none;">
 
 <h2>
 
-我的阅读档案
+说明与反馈
 
 </h2>
 
 
 
+<p>
+
+这是一个帮助自己阅读、记录和思考的工具。
+
+</p>
 
 
-<div id="records">
 
-</div>
+<p>
 
+反馈邮箱：
 
+后续填写
+
+</p>
 
 
 
 </section>
+
 
 
 
