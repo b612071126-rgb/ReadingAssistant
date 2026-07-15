@@ -168,7 +168,7 @@ if(thought){
 
     currentArchive.duration=
 
-    Math.floor(time/1000/60);
+    Math.floor(time/1000);
 
 
 
