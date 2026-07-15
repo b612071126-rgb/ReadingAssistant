@@ -2,147 +2,98 @@ let currentArchive = null;
 
 let timerInterval = null;
 
-let selectedTags = [];
+let activeStartTime = null;
+
+let lastActiveTime = null;
+
+let effectiveSeconds = 0;
 
 
 
-
-// ======================
 // 开始阅读
-// ======================
 
 function startReading(){
 
 
-    clearInterval(timerInterval);
-
-
-
     currentArchive = {
-
 
         id: crypto.randomUUID(),
 
+        type:"reading",
 
         title:"",
 
-
         source:"",
 
-
         startTime:new Date(),
-
 
         endTime:null,
 
 
         duration:0,
 
+        effectiveDuration:0,
+
 
         excerpts:[],
 
-
         thoughts:[],
 
+        images:[],
 
         tags:[]
-
 
     };
 
 
 
-    selectedTags=[];
+    activeStartTime = Date.now();
 
+    lastActiveTime = Date.now();
 
-    updateTags();
-
-
-
-    startTimer();
+    effectiveSeconds = 0;
 
 
 
-}
+    clearInterval(timerInterval);
 
 
 
-
-
-
-
-
-// ======================
-// 计时器
-// ======================
-
-
-function startTimer(){
-
-
-    timerInterval =
-    setInterval(function(){
-
-
-
-        if(!currentArchive){
-
-            return;
-
-        }
-
-
+    timerInterval=setInterval(()=>{
 
 
         let seconds =
-
         Math.floor(
-
-        (Date.now()
-        -
-        currentArchive.startTime)
-
-        /
-
-        1000
-
+            (Date.now()-activeStartTime)
+            /
+            1000
         );
 
 
 
-
-        let h =
-        Math.floor(seconds/3600);
+        currentArchive.duration=seconds;
 
 
 
-        let m =
-        Math.floor(
-            seconds%3600/60
-        );
+        // 有效阅读判断
 
+        if(
+            Date.now()-lastActiveTime
+            <
+            180000
+        ){
 
-
-        let s =
-        seconds%60;
-
-
-
-        let time =
-        document.getElementById("time");
-
-
-
-        if(time){
-
-
-            time.innerHTML =
-
-            `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-
+            effectiveSeconds++;
 
         }
 
+
+        currentArchive.effectiveDuration =
+        effectiveSeconds;
+
+
+
+        updateTime(seconds);
 
 
 
@@ -157,77 +108,86 @@ function startTimer(){
 
 
 
+// 更新时间显示
+
+function updateTime(seconds){
+
+
+    let h =
+    Math.floor(seconds/3600);
+
+
+    let m =
+    Math.floor(
+        (seconds%3600)/60
+    );
+
+
+    let s =
+    seconds%60;
 
 
 
-// ======================
-// 标签
-// ======================
+    let time =
+    document.getElementById("time");
 
 
-function selectTag(tag){
+    if(time){
 
-
-
-    if(
-        selectedTags.includes(tag)
-    ){
-
-
-        selectedTags =
-        selectedTags.filter(
-            t=>t!==tag
-        );
-
-
-    }
-
-    else{
-
-
-        selectedTags.push(tag);
-
+        time.innerHTML =
+        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 
     }
-
-
-
-    updateTags();
-
 
 }
 
 
 
+// 用户活动
 
-function updateTags(){
+document.addEventListener(
+"click",
+()=>{
+
+lastActiveTime=Date.now();
+
+});
 
 
-    let box =
-    document.getElementById(
-        "selectedTags"
-    );
+document.addEventListener(
+"input",
+()=>{
+
+lastActiveTime=Date.now();
+
+});
 
 
-    if(!box){
+
+
+
+
+
+// 添加摘录
+
+function addExcerpt(content){
+
+
+    if(!currentArchive){
 
         return;
 
     }
 
 
+    currentArchive.excerpts.push({
 
-    box.innerHTML =
+        content:content,
 
-    selectedTags.length
+        time:new Date()
 
-    ?
+    });
 
-    selectedTags.join(" ")
-
-    :
-
-    "无";
 
 }
 
@@ -236,96 +196,25 @@ function updateTags(){
 
 
 
+// 添加思考
+
+function addThought(content){
 
 
+    if(!currentArchive){
 
-// ======================
-// 收集输入
-// ======================
-
-
-function collectReading(){
-
-
-    currentArchive.title =
-
-    document.getElementById(
-        "title"
-    ).value;
-
-
-
-    currentArchive.source =
-
-    document.getElementById(
-        "source"
-    ).value;
-
-
-
-
-    let quote =
-
-    document.getElementById(
-        "quote"
-    ).value;
-
-
-
-    let thought =
-
-    document.getElementById(
-        "thought"
-    ).value;
-
-
-
-
-
-    if(quote){
-
-
-        currentArchive.excerpts.push({
-
-
-            content:quote,
-
-
-            time:new Date()
-
-
-        });
-
+        return;
 
     }
 
 
+    currentArchive.thoughts.push({
 
+        content:content,
 
+        time:new Date()
 
-
-    if(thought){
-
-
-        currentArchive.thoughts.push({
-
-
-            content:thought,
-
-
-            time:new Date()
-
-
-        });
-
-
-    }
-
-
-
-    currentArchive.tags =
-    [...selectedTags];
-
+    });
 
 
 }
@@ -336,13 +225,7 @@ function collectReading(){
 
 
 
-
-
-
-// ======================
-// 保存并开始下一篇
-// ======================
-
+// 保存当前记录
 
 function saveCurrentReading(){
 
@@ -357,25 +240,38 @@ function saveCurrentReading(){
 
 
 
+    currentArchive.title =
+    document.getElementById("title").value;
 
-    collectReading();
+
+    currentArchive.source =
+    document.getElementById("source").value;
 
 
 
-    currentArchive.duration =
+    let quote =
+    document.getElementById("quote").value;
 
-    Math.floor(
 
-    (Date.now()
-    -
-    currentArchive.startTime)
 
-    /
+    let thought =
+    document.getElementById("thought").value;
 
-    1000
 
-    );
 
+    if(quote){
+
+        addExcerpt(quote);
+
+    }
+
+
+
+    if(thought){
+
+        addThought(thought);
+
+    }
 
 
 
@@ -385,17 +281,11 @@ function saveCurrentReading(){
 
 
 
-
-
     archives.push(
-
         JSON.parse(
             JSON.stringify(currentArchive)
         )
-
     );
-
-
 
 
 
@@ -403,22 +293,7 @@ function saveCurrentReading(){
 
 
 
-
-
-    alert(
-        "保存成功，开始下一篇阅读"
-    );
-
-
-
-
-
-    clearReading();
-
-
-
-    startReading();
-
+    alert("保存成功，可以继续阅读");
 
 
 }
@@ -429,29 +304,22 @@ function saveCurrentReading(){
 
 
 
-
-
-// ======================
 // 结束阅读
-// ======================
 
-
-function stopTimer(){
+function finishReading(){
 
 
     if(!currentArchive){
 
-        alert("当前没有阅读");
+        alert("没有正在阅读");
 
-        return;
+        return null;
 
     }
 
 
 
-
-    collectReading();
-
+    clearInterval(timerInterval);
 
 
 
@@ -460,20 +328,38 @@ function stopTimer(){
 
 
 
+    currentArchive.title =
+    document.getElementById("title").value;
 
-    currentArchive.duration =
 
-    Math.floor(
 
-    (currentArchive.endTime
-    -
-    currentArchive.startTime)
+    currentArchive.source =
+    document.getElementById("source").value;
 
-    /
 
-    1000
 
-    );
+    let quote =
+    document.getElementById("quote").value;
+
+
+    let thought =
+    document.getElementById("thought").value;
+
+
+
+
+    if(quote){
+
+        addExcerpt(quote);
+
+    }
+
+
+    if(thought){
+
+        addThought(thought);
+
+    }
 
 
 
@@ -484,17 +370,11 @@ function stopTimer(){
 
 
 
-
-
     archives.push(
-
         JSON.parse(
             JSON.stringify(currentArchive)
         )
-
     );
-
-
 
 
 
@@ -502,15 +382,7 @@ function stopTimer(){
 
 
 
-
-
-    clearInterval(timerInterval);
-
-
-
-
-    openArchive();
-
+    return currentArchive;
 
 
 }
@@ -521,48 +393,30 @@ function stopTimer(){
 
 
 
+// 新建阅读
+
+function newReading(){
 
 
-// ======================
-// 清空输入
-// ======================
-
-
-function clearReading(){
+    clearInterval(timerInterval);
 
 
 
     document.getElementById("title").value="";
 
-
     document.getElementById("source").value="";
 
-
     document.getElementById("quote").value="";
-
 
     document.getElementById("thought").value="";
 
 
 
-    selectedTags=[];
-
-
-    updateTags();
+    document.getElementById("time").innerHTML="00:00:00";
 
 
 
-    let time =
-    document.getElementById("time");
-
-
-
-    if(time){
-
-        time.innerHTML="00:00:00";
-
-    }
-
+    startReading();
 
 
 }
