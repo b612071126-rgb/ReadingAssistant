@@ -86,3 +86,32 @@ border-radius:12px;
 box-shadow:0 2px 8px rgba(0,0,0,0.1);
 
 }
+
+
+
+.reading-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+.end-btn{
+
+background:red;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+padding:10px 15px;
+
+font-size:16px;
+
+}
