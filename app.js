@@ -73,6 +73,10 @@ if(
 
     saveArchives(records);
 
+localStorage.setItem(
+    "migrated",
+    "true"
+);
 
 }
 
