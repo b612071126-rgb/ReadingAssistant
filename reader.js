@@ -1,14 +1,17 @@
 let currentArchive = null;
 
-let saved = false;
-
 let timerInterval = null;
 
+let selectedTags = [];
+
+
+
+
+// ======================
 // 开始阅读
+// ======================
 
 function startReading(){
-
-    saved = false;
 
 
     currentArchive = {
@@ -35,40 +38,13 @@ function startReading(){
 
 
 
-let start = Date.now();
+    selectedTags = [];
 
-
-timerInterval = setInterval(()=>{
-
-
-let seconds =
-Math.floor(
-(Date.now()-start)/1000
-);
+    updateTags();
 
 
 
-let h =
-Math.floor(seconds/3600);
-
-
-let m =
-Math.floor(
-(seconds%3600)/60
-);
-
-
-let s =
-seconds%60;
-
-
-
-document.getElementById("time").innerHTML =
-
-`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-
-
-},1000);
+    startTimer();
 
 
 
@@ -81,17 +57,166 @@ document.getElementById("time").innerHTML =
 
 
 
-// 添加摘录
 
-function addExcerpt(content){
 
-    if(!currentArchive){
+// ======================
+// 计时
+// ======================
 
-        alert("请先开始阅读");
+
+function startTimer(){
+
+
+    clearInterval(timerInterval);
+
+
+
+    timerInterval =
+    setInterval(()=>{
+
+
+        if(!currentArchive){
+
+            return;
+
+        }
+
+
+
+        let seconds =
+        Math.floor(
+            (Date.now()
+            -
+            currentArchive.startTime)
+            /
+            1000
+        );
+
+
+
+        let h =
+        Math.floor(seconds/3600);
+
+
+
+        let m =
+        Math.floor(
+            (seconds%3600)/60
+        );
+
+
+
+        let s =
+        seconds%60;
+
+
+
+        document.getElementById("time")
+        .innerHTML =
+
+
+        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+
+
+    },1000);
+
+
+}
+
+
+
+
+
+
+// ======================
+// 标签
+// ======================
+
+
+function selectTag(tag){
+
+
+    if(
+        selectedTags.includes(tag)
+    ){
+
+
+        selectedTags =
+        selectedTags.filter(
+            t=>t!==tag
+        );
+
+
+    }else{
+
+
+        selectedTags.push(tag);
+
+
+    }
+
+
+
+    updateTags();
+
+
+}
+
+
+
+
+function updateTags(){
+
+
+    let box =
+    document.getElementById(
+        "selectedTags"
+    );
+
+
+
+    if(!box){
 
         return;
 
     }
+
+
+
+    box.innerHTML =
+    selectedTags.length
+
+    ?
+
+    selectedTags.join(" ")
+
+    :
+
+    "无";
+
+
+}
+
+
+
+
+
+
+// ======================
+// 添加摘录
+// ======================
+
+
+function addExcerpt(content){
+
+
+    if(!currentArchive){
+
+        return;
+
+    }
+
 
 
     currentArchive.excerpts.push({
@@ -107,17 +232,23 @@ function addExcerpt(content){
 
 
 
+
+
+
+// ======================
 // 添加思考
+// ======================
+
 
 function addThought(content){
 
-    if(!currentArchive){
 
-        alert("请先开始阅读");
+    if(!currentArchive){
 
         return;
 
     }
+
 
 
     currentArchive.thoughts.push({
@@ -134,9 +265,77 @@ function addThought(content){
 
 
 
-// 保存当前阅读
+
+
+// ======================
+// 获取输入
+// ======================
+
+
+function collectInput(){
+
+
+    currentArchive.title =
+    document.getElementById("title").value;
+
+
+
+    currentArchive.source =
+    document.getElementById("source").value;
+
+
+
+
+    let quote =
+    document.getElementById("quote").value;
+
+
+
+    let thought =
+    document.getElementById("thought").value;
+
+
+
+
+    if(quote){
+
+
+        addExcerpt(quote);
+
+
+    }
+
+
+
+    if(thought){
+
+
+        addThought(thought);
+
+
+    }
+
+
+
+    currentArchive.tags =
+    [...selectedTags];
+
+
+
+}
+
+
+
+
+
+
+// ======================
+// 保存并开始下一篇
+// ======================
+
 
 function saveCurrentReading(){
+
 
     if(!currentArchive){
 
@@ -148,44 +347,19 @@ function saveCurrentReading(){
 
 
 
-    currentArchive.title =
-    document.getElementById("title").value;
-
-
-    currentArchive.source =
-    document.getElementById("source").value;
+    collectInput();
 
 
 
-    let quote =
-    document.getElementById("quote").value;
+    currentArchive.duration =
+    Math.floor(
+        (Date.now()
+        -
+        currentArchive.startTime)
+        /
+        1000
+    );
 
-
-    let thought =
-    document.getElementById("thought").value;
-
-
-
-    if(quote){
-
-        addExcerpt(quote);
-
-    }
-
-
-    if(thought){
-
-        addThought(thought);
-
-    }
-
-
-currentArchive.duration =
-Math.floor(
-(Date.now()-currentArchive.startTime)
-/
-1000
-);
 
 
     let archives =
@@ -194,8 +368,12 @@ Math.floor(
 
 
     archives.push(
-    JSON.parse(JSON.stringify(currentArchive))
-);
+
+        JSON.parse(
+            JSON.stringify(currentArchive)
+        )
+
+    );
 
 
 
@@ -203,11 +381,13 @@ Math.floor(
 
 
 
-    saved=true;
+
+    alert("保存成功，开始下一篇阅读");
 
 
 
-    alert("保存成功");
+    resetReading();
+
 
 
 }
@@ -216,14 +396,17 @@ Math.floor(
 
 
 
+
+// ======================
 // 结束阅读
+// ======================
+
 
 function finishReading(){
 
 
-    if(!currentArchive){
 
-        alert("当前没有阅读");
+    if(!currentArchive){
 
         return null;
 
@@ -231,75 +414,28 @@ function finishReading(){
 
 
 
-clearInterval(timerInterval);
+    collectInput();
+
+
 
     currentArchive.endTime =
     new Date();
 
 
 
-    currentArchive.title =
-    document.getElementById("title").value;
-
-
-
-    currentArchive.source =
-    document.getElementById("source").value;
-
-
-
-
-    let quote =
-    document.getElementById("quote").value;
-
-
-    let thought =
-    document.getElementById("thought").value;
-
-
-
-    if(quote){
-
-        currentArchive.excerpts.push({
-
-            content:quote,
-
-            time:new Date()
-
-        });
-
-    }
-
-
-
-    if(thought){
-
-        currentArchive.thoughts.push({
-
-            content:thought,
-
-            time:new Date()
-
-        });
-
-    }
-
-
-
-    let time =
-    currentArchive.endTime -
-    currentArchive.startTime;
-
-
-
     currentArchive.duration =
-    Math.floor(time/1000);
+    Math.floor(
+        (currentArchive.endTime
+        -
+        currentArchive.startTime)
+        /
+        1000
+    );
 
 
-console.log(
-"最终保存时间",
-currentArchive.duration
-);
+
+    clearInterval(timerInterval);
+
 
 
     let archives =
@@ -307,25 +443,55 @@ currentArchive.duration
 
 
 
-    if(!saved){
+    archives.push(
 
-        archives.push(currentArchive);
+        JSON.parse(
+            JSON.stringify(currentArchive)
+        )
 
-JSON.parse(JSON.stringify(currentArchive))
     );
 
-        saveArchives(archives);
-
-    }
 
 
+    saveArchives(archives);
 
-    console.log(
-        "阅读结束",
-        currentArchive
-    );
 
 
     return currentArchive;
+
+
+}
+
+
+
+
+
+
+
+// ======================
+// 重置开始下一篇
+// ======================
+
+
+function resetReading(){
+
+
+
+    document.getElementById("title").value="";
+
+    document.getElementById("source").value="";
+
+    document.getElementById("quote").value="";
+
+    document.getElementById("thought").value="";
+
+
+
+    currentArchive=null;
+
+
+
+    startReading();
+
 
 }
