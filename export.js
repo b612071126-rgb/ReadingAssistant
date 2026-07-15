@@ -1,13 +1,14 @@
 function exportMarkdown(id){
 
 
-    let archives =
+
+    let records =
     loadArchives();
 
 
 
     let item =
-    archives.find(
+    records.find(
         r=>r.id===id
     );
 
@@ -15,9 +16,14 @@ function exportMarkdown(id){
 
     if(!item){
 
-        alert("没有找到这个阅读档案");
+
+        alert(
+            "找不到阅读档案"
+        );
+
 
         return;
+
 
     }
 
@@ -25,7 +31,8 @@ function exportMarkdown(id){
 
 
 
-    let md = `
+
+    let markdown = `
 
 # ${item.title || "未命名阅读"}
 
@@ -35,42 +42,26 @@ function exportMarkdown(id){
 
 
 来源：
-${item.source || "无"}
+
+${item.source || "未知"}
 
 
 
-开始时间：
+阅读日期：
 
-${new Date(item.startTime).toLocaleString()}
-
-
-
-结束时间：
-
-${
-item.endTime
-?
-new Date(item.endTime).toLocaleString()
-:
-"未结束"
-}
+${new Date(item.startTime)
+.toLocaleString()}
 
 
 
-## 阅读时间
+阅读时间：
 
-
-总时间：
-
-${Math.floor(item.duration/60)}分钟
-${item.duration%60}秒
-
-
-
-有效阅读时间：
-
-${Math.floor((item.effectiveDuration||0)/60)}
+${Math.floor(item.duration/60)}
 分钟
+
+${item.duration%60}
+秒
+
 
 
 
@@ -78,10 +69,10 @@ ${Math.floor((item.effectiveDuration||0)/60)}
 
 
 ${
-(item.tags||[])
-.map(t=>"#" + t)
-.join(" ")
+(item.tags || [])
+.join("、")
 }
+
 
 
 
@@ -89,17 +80,14 @@ ${
 
 
 ${
-(item.excerpts||[])
+(item.excerpts || [])
 .map(
 (e,index)=>
-`
-${index+1}.
-${e.content}
-
-`
+`${index+1}. ${e.content}`
 )
-.join("")
+.join("\n\n")
 }
+
 
 
 
@@ -108,17 +96,16 @@ ${e.content}
 
 
 ${
-(item.thoughts||[])
+(item.thoughts || [])
 .map(
 (t,index)=>
-`
-${index+1}.
-${t.content}
-
-`
+`${index+1}. ${t.content}`
 )
-.join("")
+.join("\n\n")
 }
+
+
+
 
 
 
@@ -126,20 +113,11 @@ ${t.content}
 ## 图片
 
 
-${
-(item.images||[])
-.length
-?
-"包含图片："+item.images.length+"张"
-:
-"无图片"
-}
+图片数量：
+
+${(item.images || []).length}
 
 
-
----
-
-由「个人阅读与思考助手」生成
 
 `;
 
@@ -147,25 +125,39 @@ ${
 
 
 
+
+
     let blob =
     new Blob(
-        [md],
+
+        [markdown],
+
         {
             type:
             "text/markdown;charset=utf-8"
         }
+
     );
 
 
 
 
+
+
     let url =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+        blob
+    );
+
+
+
 
 
 
     let a =
-    document.createElement("a");
+    document.createElement(
+        "a"
+    );
 
 
 
@@ -174,9 +166,13 @@ ${
 
 
     a.download =
+
     (item.title || "阅读档案")
+
     +
+
     ".md";
+
 
 
 
@@ -184,7 +180,9 @@ ${
 
 
 
+
     URL.revokeObjectURL(url);
+
 
 
 }
