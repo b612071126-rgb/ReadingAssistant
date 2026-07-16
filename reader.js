@@ -7,18 +7,25 @@ let timerInterval = null;
 let startTimestamp = null;
 
 
+let selectedTags = [];
+
+
 let selectedImages = [];
 
 
 
 
 
+
+// ==========================
 // 开始阅读
+// ==========================
+
 
 function startReading(){
 
 
-    currentArchive = {
+    currentArchive={
 
 
         id:crypto.randomUUID(),
@@ -55,7 +62,14 @@ function startReading(){
 
 
 
+    selectedTags=[];
+
+
     selectedImages=[];
+
+
+
+    clearReadingInput();
 
 
 
@@ -64,13 +78,15 @@ function startReading(){
 
 
 
-
     clearInterval(timerInterval);
 
 
 
     timerInterval =
-    setInterval(updateReadingTime,1000);
+    setInterval(
+        updateReadingTime,
+        1000
+    );
 
 
 
@@ -84,11 +100,12 @@ function startReading(){
 
 
 
-// 更新时间
+// ==========================
+// 计时
+// ==========================
 
 
 function updateReadingTime(){
-
 
 
     if(!currentArchive){
@@ -101,13 +118,9 @@ function updateReadingTime(){
 
     let seconds =
     Math.floor(
-
         (Date.now()-startTimestamp)
-
         /
-
         1000
-
     );
 
 
@@ -120,7 +133,6 @@ function updateReadingTime(){
     showTime(seconds);
 
 
-
 }
 
 
@@ -128,20 +140,12 @@ function updateReadingTime(){
 
 
 
-
-
-
-// 显示时间
-
-
 function showTime(seconds){
 
 
-    let h =
-    Math.floor(
-        seconds/3600
-    );
 
+    let h =
+    Math.floor(seconds/3600);
 
 
     let m =
@@ -150,10 +154,8 @@ function showTime(seconds){
     );
 
 
-
     let s =
     seconds%60;
-
 
 
 
@@ -169,7 +171,6 @@ function showTime(seconds){
 
 
         box.innerHTML =
-
         `${String(h).padStart(2,"0")}:
 ${String(m).padStart(2,"0")}:
 ${String(s).padStart(2,"0")}`;
@@ -188,10 +189,73 @@ ${String(s).padStart(2,"0")}`;
 
 
 
-// 获取当前页面内容
+// ==========================
+// 标签
+// ==========================
+
+
+function selectTag(button,tag){
+
+
+
+    if(
+        selectedTags.includes(tag)
+    ){
+
+
+        selectedTags =
+        selectedTags.filter(
+            t=>t!==tag
+        );
+
+
+        button.classList.remove(
+            "tag-active"
+        );
+
+
+
+    }
+    else{
+
+
+        selectedTags.push(tag);
+
+
+
+        button.classList.add(
+            "tag-active"
+        );
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 更新档案
+// ==========================
 
 
 function updateCurrentArchive(){
+
+
+    if(!currentArchive){
+
+        return;
+
+    }
+
 
 
 
@@ -203,6 +267,7 @@ function updateCurrentArchive(){
 
 
 
+
     currentArchive.source =
 
     document.getElementById(
@@ -210,25 +275,26 @@ function updateCurrentArchive(){
     ).value;
 
 
-currentArchive.tags =
-[...selectedTags];
+
+
+    currentArchive.tags =
+    [...selectedTags];
+
+
+
 
 
     let quote =
-
     document.getElementById(
         "quote"
     ).value;
 
 
 
-
     let thought =
-
     document.getElementById(
         "thought"
     ).value;
-
 
 
 
@@ -245,9 +311,8 @@ currentArchive.tags =
         });
 
 
+
     }
-
-
 
 
 
@@ -268,9 +333,8 @@ currentArchive.tags =
 
 
 
-
     currentArchive.images =
-    selectedImages.slice();
+    [...selectedImages];
 
 
 
@@ -283,8 +347,9 @@ currentArchive.tags =
 
 
 
-
-// 保存当前阅读
+// ==========================
+// 保存阅读
+// ==========================
 
 
 function saveCurrentReading(){
@@ -293,23 +358,17 @@ function saveCurrentReading(){
 
     if(!currentArchive){
 
-
         alert(
-            "请先开始阅读"
+        "请先开始阅读"
         );
 
-
         return;
-
 
     }
 
 
 
-
-
     updateCurrentArchive();
-
 
 
 
@@ -319,17 +378,34 @@ function saveCurrentReading(){
 
 
 
-    archives.unshift(
-
-        JSON.parse(
-            JSON.stringify(
-                currentArchive
-            )
-        )
-
+    let index =
+    archives.findIndex(
+        a=>a.id===currentArchive.id
     );
 
 
+
+    if(index>=0){
+
+
+        archives[index] =
+        JSON.parse(
+        JSON.stringify(currentArchive)
+        );
+
+
+    }
+    else{
+
+
+        archives.unshift(
+        JSON.parse(
+        JSON.stringify(currentArchive)
+        )
+        );
+
+
+    }
 
 
 
@@ -337,19 +413,12 @@ function saveCurrentReading(){
 
 
 
-
     alert(
-        "保存成功，可以继续阅读"
+    "保存成功"
     );
 
 
 
-
-
-    clearReadingInput();
-
-
-
 }
 
 
@@ -360,54 +429,13 @@ function saveCurrentReading(){
 
 
 
-// 清空输入
-
-
-function clearReadingInput(){
-
-
-    document.getElementById(
-        "title"
-    ).value="";
-
-
-
-    document.getElementById(
-        "source"
-    ).value="";
-
-
-
-    document.getElementById(
-        "quote"
-    ).value="";
-
-
-
-    document.getElementById(
-        "thought"
-    ).value="";
-
-
-
-    selectedImages=[];
-
-
-
-}
-
-
-
-
-
-
-
-
-
+// ==========================
 // 结束阅读
+// ==========================
 
 
 function finishReading(){
+
 
 
     if(!currentArchive){
@@ -431,6 +459,7 @@ function finishReading(){
 
 
 
+
     let hasContent =
 
     currentArchive.title ||
@@ -445,8 +474,6 @@ function finishReading(){
 
 
 
-    // 没有任何内容，不保存
-
     if(!hasContent){
 
 
@@ -460,72 +487,20 @@ function finishReading(){
 
 
 
-    let archives =
-    loadArchives();
-
-
-
-    // 如果之前没有保存过，才新增
-
-    if(!saved){
-
-
-        archives.unshift(
-
-            JSON.parse(
-                JSON.stringify(
-                    currentArchive
-                )
-            )
-
-        );
-
-
-        saveArchives(archives);
-
-
-    }
-
-
-
-    return currentArchive;
-
-
-}
-
-
-
-
-
-
-
-
-// 结束按钮
-
-
-function stopTimer(){
+    saveCurrentReading();
 
 
 
     let result =
-    finishReading();
+    currentArchive;
 
 
 
-
-    if(result){
-
-
-        alert(
-            "阅读结束，档案已保存"
-        );
+    currentArchive=null;
 
 
 
-        openArchive();
-
-
-    }
+    return result;
 
 
 
@@ -538,98 +513,13 @@ function stopTimer(){
 
 
 
-
-// 图片保存
-
-
-function saveImage(){
-
-
-
-    let input =
-    document.getElementById(
-        "imageInput"
-    );
-
-
-
-    if(
-        !input.files[0]
-    ){
-
-
-        alert(
-            "请选择图片"
-        );
-
-
-        return;
-
-
-    }
-
-
-
-
-
-
-    let reader =
-    new FileReader();
-
-
-
-
-    reader.onload=function(e){
-
-
-
-        selectedImages.push({
-
-            name:
-            input.files[0].name,
-
-
-            data:
-            e.target.result
-
-
-        });
-
-
-
-        alert(
-            "图片已添加"
-        );
-
-
-
-    };
-
-
-
-
-    reader.readAsDataURL(
-
-        input.files[0]
-
-    );
-
-
-
-}
-
-
-
-// =====================
-// 图片资料
-// =====================
-
-
-let selectedImages = [];
-
+// ==========================
+// 图片
+// ==========================
 
 
 function selectImages(event){
+
 
 
     let files =
@@ -637,7 +527,8 @@ function selectImages(event){
 
 
 
-    Array.from(files).forEach(file=>{
+    Array.from(files)
+    .forEach(file=>{
 
 
         let reader =
@@ -648,15 +539,14 @@ function selectImages(event){
         reader.onload=function(e){
 
 
-            selectedImages.push(
-                e.target.result
-            );
 
+            selectedImages.push({
 
-            console.log(
-                "图片加入成功",
-                selectedImages.length
-            );
+                name:file.name,
+
+                data:e.target.result
+
+            });
 
 
         };
@@ -664,6 +554,7 @@ function selectImages(event){
 
 
         reader.readAsDataURL(file);
+
 
 
     });
