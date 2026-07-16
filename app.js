@@ -1,3 +1,130 @@
+let currentDetail=null;
+
+
+
+function openDetail(id){
+
+
+    let item =
+    records.find(
+        r=>r.id===id
+    );
+
+
+    currentDetail=item;
+
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "detailPage"
+    ).style.display="block";
+
+
+
+    document.getElementById(
+        "detailContent"
+    ).innerHTML=`
+
+<h2>
+${item.title || "未命名"}
+</h2>
+
+
+<p>
+来源：
+${item.source || ""}
+</p>
+
+
+<p>
+时间：
+${new Date(item.startTime).toLocaleString()}
+</p>
+
+
+<p>
+标签：
+
+${
+(item.tags||[])
+.map(t=>t.name||t)
+.join(" ")
+}
+
+</p>
+
+
+<h3>
+摘录
+</h3>
+
+<p>
+
+${
+(item.excerpts||[])
+.map(e=>e.content)
+.join("<br><br>")
+}
+
+</p>
+
+
+
+<h3>
+思考
+</h3>
+
+
+<p>
+
+${
+(item.thoughts||[])
+.map(t=>t.content)
+.join("<br><br>")
+}
+
+</p>
+
+
+<h3>
+图片
+</h3>
+
+
+${
+(item.images||[])
+.map(img=>`
+
+<img src="${img}"
+style="width:100%;">
+
+`)
+.join("")
+}
+
+
+`;
+
+}
+
+
+function backToArchive(){
+
+hideAllPages();
+
+document.getElementById(
+"archivePage"
+).style.display="block";
+
+
+showRecords();
+
+}
+
+
+
 function hideAllPages(){
 
 
