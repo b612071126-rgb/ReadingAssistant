@@ -1,17 +1,24 @@
 // ==========================
-// 数据存储系统
+// 数据存储中心 v1.1
 // ==========================
 
 
+// 阅读档案
+
 const STORAGE_KEY = "readingArchives";
+
+
+// 速记
 
 const NOTE_KEY = "quickNotes";
 
 
 
 
+
+
 // ==========================
-// 阅读档案
+// 保存阅读档案
 // ==========================
 
 
@@ -33,7 +40,15 @@ function saveArchives(archives){
 
 
 
+
+
+// ==========================
+// 读取阅读档案
+// ==========================
+
+
 function loadArchives(){
+
 
 
     let data =
@@ -54,21 +69,88 @@ function loadArchives(){
     try{
 
 
-        let result =
+        let archives =
         JSON.parse(data);
 
 
 
-        if(!Array.isArray(result)){
+        // 数据升级
+
+        archives =
+        archives.map(item=>{
 
 
-            return [];
-
-        }
+            return {
 
 
+                id:
+                item.id ||
+                crypto.randomUUID(),
 
-        return result;
+
+
+                title:
+                item.title || "",
+
+
+
+                source:
+                item.source || "",
+
+
+
+                startTime:
+                item.startTime ||
+                new Date(),
+
+
+
+                endTime:
+                item.endTime ||
+                null,
+
+
+
+                duration:
+                Number(item.duration)||0,
+
+
+
+                excerpts:
+                item.excerpts || [],
+
+
+
+                thoughts:
+                item.thoughts || [],
+
+
+
+                tags:
+                item.tags || [],
+
+
+
+                images:
+                item.images || [],
+
+
+
+                // 新增
+
+                important:
+                item.important || false
+
+
+
+            };
+
+
+        });
+
+
+
+        return archives;
 
 
 
@@ -77,13 +159,15 @@ function loadArchives(){
 
 
         console.log(
-            "阅读档案读取失败"
+        "档案读取失败"
         );
 
 
         return [];
 
+
     }
+
 
 
 }
@@ -96,11 +180,12 @@ function loadArchives(){
 
 
 // ==========================
-// 速记
+// 保存速记
 // ==========================
 
 
 function saveNotes(notes){
+
 
 
     localStorage.setItem(
@@ -119,7 +204,14 @@ function saveNotes(notes){
 
 
 
+
+// ==========================
+// 读取速记
+// ==========================
+
+
 function loadNotes(){
+
 
 
     let data =
@@ -140,21 +232,7 @@ function loadNotes(){
     try{
 
 
-        let result =
-        JSON.parse(data);
-
-
-
-        if(!Array.isArray(result)){
-
-
-            return [];
-
-        }
-
-
-
-        return result;
+        return JSON.parse(data);
 
 
 
@@ -167,8 +245,8 @@ function loadNotes(){
     }
 
 
-
 }
+
 
 
 
@@ -178,6 +256,7 @@ function loadNotes(){
 
 // ==========================
 // 清空数据
+// 测试使用
 // ==========================
 
 
@@ -198,8 +277,9 @@ function clearAllData(){
 
 
     alert(
-        "数据已清空"
+    "所有数据已清空"
     );
+
 
 
 }
