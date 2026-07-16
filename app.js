@@ -780,7 +780,7 @@ alert(
 showTodayQuote();
 function openQuickList(){
 
-lastPage="readerPanel";  
+lastPage="quickPage";  
 
 
 hideAllPages();  
