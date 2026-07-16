@@ -1,5 +1,5 @@
 // ==========================
-// 阅读档案存储
+// 数据存储系统
 // ==========================
 
 
@@ -10,9 +10,10 @@ const NOTE_KEY = "quickNotes";
 
 
 
+// ==========================
+// 阅读档案
+// ==========================
 
-
-// 保存阅读档案
 
 function saveArchives(archives){
 
@@ -31,10 +32,6 @@ function saveArchives(archives){
 
 
 
-
-
-
-// 读取阅读档案
 
 function loadArchives(){
 
@@ -57,7 +54,21 @@ function loadArchives(){
     try{
 
 
-        return JSON.parse(data);
+        let result =
+        JSON.parse(data);
+
+
+
+        if(!Array.isArray(result)){
+
+
+            return [];
+
+        }
+
+
+
+        return result;
 
 
 
@@ -66,7 +77,7 @@ function loadArchives(){
 
 
         console.log(
-            "档案数据错误，重新初始化"
+            "阅读档案读取失败"
         );
 
 
@@ -84,12 +95,12 @@ function loadArchives(){
 
 
 
-
-// 保存速记
+// ==========================
+// 速记
+// ==========================
 
 
 function saveNotes(notes){
-
 
 
     localStorage.setItem(
@@ -106,10 +117,6 @@ function saveNotes(notes){
 
 
 
-
-
-
-// 读取速记
 
 
 function loadNotes(){
@@ -130,11 +137,24 @@ function loadNotes(){
 
 
 
-
     try{
 
 
-        return JSON.parse(data);
+        let result =
+        JSON.parse(data);
+
+
+
+        if(!Array.isArray(result)){
+
+
+            return [];
+
+        }
+
+
+
+        return result;
 
 
 
@@ -156,10 +176,13 @@ function loadNotes(){
 
 
 
-// 清空所有数据
-// 测试使用
+// ==========================
+// 清空数据
+// ==========================
+
 
 function clearAllData(){
+
 
 
     localStorage.removeItem(
@@ -167,9 +190,11 @@ function clearAllData(){
     );
 
 
+
     localStorage.removeItem(
         NOTE_KEY
     );
+
 
 
     alert(
