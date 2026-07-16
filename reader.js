@@ -1,26 +1,17 @@
 let currentArchive = null;
 
-
 let timerInterval = null;
-
 
 let startTimestamp = null;
 
-
 let selectedTags = [];
-
 
 let selectedImages = [];
 
 
 
 
-
-
-// ==========================
 // 开始阅读
-// ==========================
-
 
 function startReading(){
 
@@ -69,10 +60,6 @@ function startReading(){
 
 
 
-    clearReadingInput();
-
-
-
     startTimestamp =
     Date.now();
 
@@ -90,6 +77,10 @@ function startReading(){
 
 
 
+    showTime(0);
+
+
+
 }
 
 
@@ -97,13 +88,7 @@ function startReading(){
 
 
 
-
-
-
-// ==========================
-// 计时
-// ==========================
-
+// 更新时间
 
 function updateReadingTime(){
 
@@ -140,8 +125,9 @@ function updateReadingTime(){
 
 
 
-function showTime(seconds){
+// 显示时间
 
+function showTime(seconds){
 
 
     let h =
@@ -156,7 +142,6 @@ function showTime(seconds){
 
     let s =
     seconds%60;
-
 
 
 
@@ -186,16 +171,9 @@ ${String(s).padStart(2,"0")}`;
 
 
 
-
-
-
-// ==========================
 // 标签
-// ==========================
-
 
 function selectTag(button,tag){
-
 
 
     if(
@@ -209,10 +187,10 @@ function selectTag(button,tag){
         );
 
 
+
         button.classList.remove(
             "tag-active"
         );
-
 
 
     }
@@ -231,7 +209,6 @@ function selectTag(button,tag){
     }
 
 
-
 }
 
 
@@ -241,11 +218,7 @@ function selectTag(button,tag){
 
 
 
-
-// ==========================
-// 更新档案
-// ==========================
-
+// 更新阅读内容
 
 function updateCurrentArchive(){
 
@@ -258,21 +231,13 @@ function updateCurrentArchive(){
 
 
 
-
     currentArchive.title =
-
-    document.getElementById(
-        "title"
-    ).value;
-
+    document.getElementById("title").value;
 
 
 
     currentArchive.source =
-
-    document.getElementById(
-        "source"
-    ).value;
+    document.getElementById("source").value;
 
 
 
@@ -282,19 +247,13 @@ function updateCurrentArchive(){
 
 
 
-
-
     let quote =
-    document.getElementById(
-        "quote"
-    ).value;
+    document.getElementById("quote").value;
 
 
 
     let thought =
-    document.getElementById(
-        "thought"
-    ).value;
+    document.getElementById("thought").value;
 
 
 
@@ -309,7 +268,6 @@ function updateCurrentArchive(){
             time:new Date()
 
         });
-
 
 
     }
@@ -337,7 +295,6 @@ function updateCurrentArchive(){
     [...selectedImages];
 
 
-
 }
 
 
@@ -347,10 +304,8 @@ function updateCurrentArchive(){
 
 
 
-// ==========================
-// 保存阅读
-// ==========================
 
+// 保存阅读
 
 function saveCurrentReading(){
 
@@ -358,9 +313,7 @@ function saveCurrentReading(){
 
     if(!currentArchive){
 
-        alert(
-        "请先开始阅读"
-        );
+        alert("请先开始阅读");
 
         return;
 
@@ -385,12 +338,13 @@ function saveCurrentReading(){
 
 
 
+
     if(index>=0){
 
 
-        archives[index] =
+        archives[index]=
         JSON.parse(
-        JSON.stringify(currentArchive)
+            JSON.stringify(currentArchive)
         );
 
 
@@ -399,9 +353,11 @@ function saveCurrentReading(){
 
 
         archives.unshift(
-        JSON.parse(
-        JSON.stringify(currentArchive)
-        )
+
+            JSON.parse(
+                JSON.stringify(currentArchive)
+            )
+
         );
 
 
@@ -413,9 +369,7 @@ function saveCurrentReading(){
 
 
 
-    alert(
-    "保存成功"
-    );
+    alert("保存成功");
 
 
 
@@ -429,10 +383,7 @@ function saveCurrentReading(){
 
 
 
-// ==========================
 // 结束阅读
-// ==========================
-
 
 function finishReading(){
 
@@ -474,6 +425,7 @@ function finishReading(){
 
 
 
+
     if(!hasContent){
 
 
@@ -484,6 +436,7 @@ function finishReading(){
 
 
     }
+
 
 
 
@@ -513,13 +466,10 @@ function finishReading(){
 
 
 
-// ==========================
-// 图片
-// ==========================
 
+// 图片
 
 function selectImages(event){
-
 
 
     let files =
@@ -537,7 +487,6 @@ function selectImages(event){
 
 
         reader.onload=function(e){
-
 
 
             selectedImages.push({
