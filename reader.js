@@ -10,7 +10,6 @@ let selectedImages = [];
 
 
 
-
 // 开始阅读
 
 function startReading(){
@@ -46,7 +45,10 @@ function startReading(){
         tags:[],
 
 
-        images:[]
+        images:[],
+
+
+        important:false
 
 
     };
@@ -60,8 +62,7 @@ function startReading(){
 
 
 
-    startTimestamp =
-    Date.now();
+    startTimestamp = Date.now();
 
 
 
@@ -69,16 +70,17 @@ function startReading(){
 
 
 
-    timerInterval =
-    setInterval(
-        updateReadingTime,
-        1000
-    );
+    timerInterval=setInterval(()=>{
+
+
+        updateReadingTime();
+
+
+    },1000);
 
 
 
     showTime(0);
-
 
 
 }
@@ -110,8 +112,7 @@ function updateReadingTime(){
 
 
 
-    currentArchive.duration =
-    seconds;
+    currentArchive.duration=seconds;
 
 
 
@@ -134,10 +135,12 @@ function showTime(seconds){
     Math.floor(seconds/3600);
 
 
+
     let m =
     Math.floor(
         (seconds%3600)/60
     );
+
 
 
     let s =
@@ -146,9 +149,7 @@ function showTime(seconds){
 
 
     let box =
-    document.getElementById(
-        "time"
-    );
+    document.getElementById("time");
 
 
 
@@ -171,14 +172,12 @@ ${String(s).padStart(2,"0")}`;
 
 
 
-// 标签
+// 标签选择
 
 function selectTag(button,tag){
 
 
-    if(
-        selectedTags.includes(tag)
-    ){
+    if(selectedTags.includes(tag)){
 
 
         selectedTags =
@@ -218,7 +217,7 @@ function selectTag(button,tag){
 
 
 
-// 更新阅读内容
+// 更新阅读数据
 
 function updateCurrentArchive(){
 
@@ -247,6 +246,24 @@ function updateCurrentArchive(){
 
 
 
+
+    /*
+    
+    关键修复：
+    
+    保存前重新读取内容
+    
+    防止push导致重复
+    
+    */
+
+
+    currentArchive.excerpts=[];
+
+    currentArchive.thoughts=[];
+
+
+
     let quote =
     document.getElementById("quote").value;
 
@@ -271,6 +288,7 @@ function updateCurrentArchive(){
 
 
     }
+
 
 
 
@@ -304,7 +322,6 @@ function updateCurrentArchive(){
 
 
 
-
 // 保存阅读
 
 function saveCurrentReading(){
@@ -330,12 +347,10 @@ function saveCurrentReading(){
 
 
 
-
     let index =
     archives.findIndex(
         a=>a.id===currentArchive.id
     );
-
 
 
 
@@ -366,11 +381,6 @@ function saveCurrentReading(){
 
 
     saveArchives(archives);
-
-
-
-    alert("保存成功");
-
 
 
 }
@@ -407,7 +417,6 @@ function finishReading(){
 
 
     clearInterval(timerInterval);
-
 
 
 
@@ -467,9 +476,10 @@ function finishReading(){
 
 
 
-// 图片
+// 图片选择
 
 function selectImages(event){
+
 
 
     let files =
