@@ -617,3 +617,56 @@ function saveImage(){
 
 
 }
+
+
+
+// =====================
+// 图片资料
+// =====================
+
+
+let selectedImages = [];
+
+
+
+function selectImages(event){
+
+
+    let files =
+    event.target.files;
+
+
+
+    Array.from(files).forEach(file=>{
+
+
+        let reader =
+        new FileReader();
+
+
+
+        reader.onload=function(e){
+
+
+            selectedImages.push(
+                e.target.result
+            );
+
+
+            console.log(
+                "图片加入成功",
+                selectedImages.length
+            );
+
+
+        };
+
+
+
+        reader.readAsDataURL(file);
+
+
+    });
+
+
+}
