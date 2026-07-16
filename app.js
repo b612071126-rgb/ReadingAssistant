@@ -1,29 +1,40 @@
 // ==========================
-// 全局
+// 页面状态
 // ==========================
 
 
-let currentDetail = null;
+let lastPage="readerPanel";
 
 
-let lastPage = "readerPanel";
+let records=[];
 
 
-let records = loadArchives();
+
+// 速记计时
+
+let quickTimer=null;
+
+let quickStartTime=null;
+
+let quickDuration=0;
+
+
 
 
 
 
 
 // ==========================
-// 页面控制
+// 页面隐藏
 // ==========================
 
 
 function hideAllPages(){
 
 
-    let pages = [
+
+    let pages=[
+
 
         "readerPanel",
 
@@ -36,6 +47,7 @@ function hideAllPages(){
         "quickPage",
 
         "helpPage"
+
 
     ];
 
@@ -51,14 +63,13 @@ function hideAllPages(){
 
         if(page){
 
-
             page.style.display="none";
-
 
         }
 
 
     });
+
 
 
 }
@@ -69,6 +80,10 @@ function hideAllPages(){
 
 
 
+
+// ==========================
+// 首页
+// ==========================
 
 
 function openHome(){
@@ -96,8 +111,13 @@ function openHome(){
 
 
 
+// ==========================
+// 阅读
+// ==========================
+
 
 function openReader(){
+
 
 
     lastPage="readerPanel";
@@ -117,8 +137,8 @@ function openReader(){
     startReading();
 
 
-}
 
+}
 
 
 
@@ -150,12 +170,6 @@ function goBack(){
 
 
 
-
-// ==========================
-// 结束阅读
-// ==========================
-
-
 function stopTimer(){
 
 
@@ -168,11 +182,9 @@ function stopTimer(){
     if(result){
 
 
-
         alert(
         "阅读结束，档案已保存"
         );
-
 
 
     }
@@ -201,6 +213,7 @@ function stopTimer(){
 function openArchive(){
 
 
+
     lastPage="readerPanel";
 
 
@@ -218,9 +231,8 @@ function openArchive(){
     showRecords();
 
 
+
 }
-
-
 
 
 
@@ -244,11 +256,7 @@ function showRecords(){
 
 
 
-    if(!box){
-
-        return;
-
-    }
+    if(!box)return;
 
 
 
@@ -256,14 +264,10 @@ function showRecords(){
 
 
 
-
-
     records.forEach(item=>{
 
 
-
-        box.innerHTML += `
-
+        box.innerHTML+=`
 
 
 <div class="record">
@@ -281,7 +285,7 @@ ${item.title || "未命名"}
 
 来源：
 
-${item.source || "无"}
+${item.source||""}
 
 </p>
 
@@ -301,13 +305,13 @@ ${
 
 
 
-
 <p>
 
-阅读：
+阅读时间：
 
 ${Math.floor(item.duration/60)}
 分钟
+
 ${item.duration%60}
 秒
 
@@ -316,10 +320,9 @@ ${item.duration%60}
 
 
 
-
 <button onclick="openDetail('${item.id}')">
 
-查看详情
+查看
 
 </button>
 
@@ -328,10 +331,9 @@ ${item.duration%60}
 
 <button onclick="exportMarkdown('${item.id}')">
 
-导出Markdown
+导出
 
 </button>
-
 
 
 
@@ -346,13 +348,11 @@ ${item.duration%60}
 </div>
 
 
-
 `;
 
 
 
     });
-
 
 
 }
@@ -363,11 +363,6 @@ ${item.duration%60}
 
 
 
-
-
-// ==========================
-// 详情
-// ==========================
 
 
 function openDetail(id){
@@ -386,15 +381,7 @@ function openDetail(id){
 
 
 
-    if(!item){
-
-        return;
-
-    }
-
-
-
-    currentDetail=item;
+    if(!item)return;
 
 
 
@@ -409,14 +396,14 @@ function openDetail(id){
 
 
 
-
     document.getElementById(
         "detailContent"
     ).innerHTML=`
 
+
 <h2>
 
-${item.title || "未命名"}
+${item.title||"未命名"}
 
 </h2>
 
@@ -426,23 +413,9 @@ ${item.title || "未命名"}
 
 来源：
 
-${item.source || ""}
+${item.source||""}
 
 </p>
-
-
-
-<p>
-
-阅读时间：
-
-${Math.floor(item.duration/60)}
-分钟
-${item.duration%60}
-秒
-
-</p>
-
 
 
 
@@ -460,13 +433,11 @@ ${
 
 
 
-
 <h3>
 
 摘录
 
 </h3>
-
 
 
 <p>
@@ -482,14 +453,11 @@ ${
 
 
 
-
 <h3>
 
 思考
 
 </h3>
-
-
 
 
 <p>
@@ -504,11 +472,9 @@ ${
 
 
 
-
-
 <h3>
 
-图片资料
+图片
 
 </h3>
 
@@ -527,12 +493,10 @@ img
 img.data;
 
 
+return`
 
-return `
-
-<img 
-src="${src}"
-class="archive-image">
+<img class="archive-image"
+src="${src}">
 
 `
 
@@ -543,13 +507,12 @@ class="archive-image">
 }
 
 
+
 `;
 
 
 
 }
-
-
 
 
 
@@ -572,119 +535,6 @@ function backToArchive(){
 
 
 
-
-// ==========================
-// 搜索
-// ==========================
-
-
-function searchArchives(){
-
-
-
-    let keyword =
-    document.getElementById(
-        "searchInput"
-    ).value;
-
-
-
-    let all =
-    loadArchives();
-
-
-
-    if(!keyword){
-
-
-        records=all;
-
-
-    }
-    else{
-
-
-        records =
-        all.filter(item=>{
-
-
-            let text =
-            JSON.stringify(item);
-
-
-
-            return text.includes(keyword);
-
-
-
-        });
-
-
-
-    }
-
-
-
-    let box =
-    document.getElementById(
-        "records"
-    );
-
-
-
-    box.innerHTML="";
-
-
-
-    records.forEach(item=>{
-
-
-        box.innerHTML += `
-
-
-<div class="record">
-
-
-<h3>
-${item.title || "未命名"}
-</h3>
-
-
-<p>
-
-${item.source || ""}
-
-</p>
-
-
-<button onclick="openDetail('${item.id}')">
-
-查看详情
-
-</button>
-
-
-
-</div>
-
-
-`;
-
-
-    });
-
-
-
-}
-
-
-
-
-
-
-
-
-
 // ==========================
 // 删除
 // ==========================
@@ -694,14 +544,9 @@ function deleteArchive(id){
 
 
 
-    let ok =
-    confirm(
-    "确定删除吗？"
-    );
-
-
-
-    if(!ok){
+    if(
+    !confirm("确定删除吗？")
+    ){
 
         return;
 
@@ -740,6 +585,105 @@ function deleteArchive(id){
 
 
 // ==========================
+// 搜索
+// ==========================
+
+
+function searchArchives(){
+
+
+
+    let key =
+    document.getElementById(
+        "searchInput"
+    ).value;
+
+
+
+    let archives =
+    loadArchives();
+
+
+
+    if(!key){
+
+
+        records=archives;
+
+
+    }
+    else{
+
+
+        records =
+        archives.filter(
+            item=>
+            JSON.stringify(item)
+            .includes(key)
+        );
+
+
+    }
+
+
+
+
+    let box =
+    document.getElementById(
+        "records"
+    );
+
+
+
+    box.innerHTML="";
+
+
+
+    records.forEach(item=>{
+
+
+        box.innerHTML+=`
+
+
+<div class="record">
+
+
+<h3>
+
+${item.title||"未命名"}
+
+</h3>
+
+
+
+<button onclick="openDetail('${item.id}')">
+
+查看
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
 // 统计
 // ==========================
 
@@ -756,35 +700,32 @@ function showStats(){
     let total=0;
 
 
-
-    let quotes=0;
-
+    let quote=0;
 
 
-    let thoughts=0;
+    let thought=0;
 
 
 
     archives.forEach(item=>{
 
 
-        total +=
+        total+=
         Number(item.duration)||0;
 
 
 
-        quotes +=
+        quote+=
         (item.excerpts||[]).length;
 
 
 
-        thoughts +=
+        thought+=
         (item.thoughts||[]).length;
 
 
 
     });
-
 
 
 
@@ -796,78 +737,46 @@ function showStats(){
 
 
 
-    if(!box){
-
-        return;
-
-    }
+    if(box){
 
 
-
-
-    box.innerHTML=`
-
+        box.innerHTML=`
 
 <h3>
-
 阅读成长
-
 </h3>
 
 
-
 <p>
-
 阅读：
-
 ${archives.length}
-
 篇
-
 </p>
 
 
-
 <p>
-
-累计时间：
-
+时间：
 ${Math.floor(total/3600)}
 小时
-
-${Math.floor(total%3600/60)}
-分钟
-
 </p>
 
 
-
 <p>
-
 摘录：
-
-${quotes}
-
+${quote}
 条
-
 </p>
-
 
 
 <p>
-
 思考：
-
-${thoughts}
-
+${thought}
 条
-
 </p>
-
-
 
 `;
 
+    }
 
 
 }
@@ -879,13 +788,13 @@ ${thoughts}
 
 
 
-
 // ==========================
-// 速记
+// 速记系统
 // ==========================
 
 
 function openQuickNote(){
+
 
 
     lastPage="readerPanel";
@@ -902,8 +811,91 @@ function openQuickNote(){
 
 
 
+    quickStartTime =
+    Date.now();
+
+
+
+    clearInterval(
+        quickTimer
+    );
+
+
+
+    quickTimer =
+    setInterval(()=>{
+
+
+        let seconds =
+        Math.floor(
+        (Date.now()-quickStartTime)
+        /
+        1000
+        );
+
+
+
+        quickDuration=seconds;
+
+
+
+        let box =
+        document.getElementById(
+            "quickTime"
+        );
+
+
+
+        if(box){
+
+
+            box.innerHTML =
+            formatTime(seconds);
+
+
+        }
+
+
+    },1000);
+
+
+
 }
 
+
+
+
+
+
+
+
+function formatTime(seconds){
+
+
+
+    let h =
+    Math.floor(seconds/3600);
+
+
+
+    let m =
+    Math.floor(
+        (seconds%3600)/60
+    );
+
+
+
+    let s =
+    seconds%60;
+
+
+
+    return `${String(h).padStart(2,"0")}:
+${String(m).padStart(2,"0")}:
+${String(s).padStart(2,"0")}`;
+
+
+}
 
 
 
@@ -925,13 +917,17 @@ function saveQuickNote(){
 
     if(!content){
 
+
         alert(
         "请输入内容"
         );
 
+
         return;
 
+
     }
+
 
 
 
@@ -949,8 +945,10 @@ function saveQuickNote(){
         content:content,
 
 
-        time:new Date()
+        duration:quickDuration,
 
+
+        time:new Date()
 
 
     });
@@ -962,7 +960,7 @@ function saveQuickNote(){
 
 
     alert(
-    "保存成功"
+    "速记保存成功"
     );
 
 
@@ -983,6 +981,7 @@ function saveQuickNote(){
 
 
 function openHelp(){
+
 
 
     lastPage="readerPanel";
