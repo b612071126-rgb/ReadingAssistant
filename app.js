@@ -2,12 +2,9 @@
 // 页面状态
 // ==========================
 
-
 let lastPage="readerPanel";
 
-
 let records=[];
-
 
 
 // 速记计时
@@ -22,15 +19,70 @@ let quickDuration=0;
 
 
 
+// ==========================
+// 今日句子
+// ==========================
+
+
+function showTodayQuote(){
+
+
+    let quotes=[
+
+
+        "阅读，让生活拥有更多可能。",
+
+        "真正的阅读，是改变理解世界的方式。",
+
+        "知识不会自动改变人生，思考才会。",
+
+        "每一次记录，都是未来自己的资产。",
+
+        "阅读的终点，不是记住，而是形成自己的理解。"
+
+
+    ];
+
+
+
+    let box =
+    document.getElementById(
+        "todayQuote"
+    );
+
+
+
+    if(box){
+
+
+        let index =
+        Math.floor(
+            Math.random()*quotes.length
+        );
+
+
+        box.innerHTML =
+        quotes[index];
+
+
+    }
+
+
+
+}
+
+
+
+
+
 
 
 // ==========================
-// 页面隐藏
+// 隐藏页面
 // ==========================
 
 
 function hideAllPages(){
-
 
 
     let pages=[
@@ -71,9 +123,7 @@ function hideAllPages(){
     });
 
 
-
 }
-
 
 
 
@@ -92,7 +142,6 @@ function openHome(){
     hideAllPages();
 
 
-
     document.getElementById(
         "readerPanel"
     ).style.display="block";
@@ -101,9 +150,10 @@ function openHome(){
 
     showStats();
 
+    showTodayQuote();
+
 
 }
-
 
 
 
@@ -119,9 +169,7 @@ function openHome(){
 function openReader(){
 
 
-
     lastPage="readerPanel";
-
 
 
     hideAllPages();
@@ -137,10 +185,7 @@ function openReader(){
     startReading();
 
 
-
 }
-
-
 
 
 
@@ -150,15 +195,12 @@ function openReader(){
 function goBack(){
 
 
-
     hideAllPages();
-
 
 
     document.getElementById(
         lastPage
     ).style.display="block";
-
 
 
 }
@@ -168,10 +210,7 @@ function goBack(){
 
 
 
-
-
 function stopTimer(){
-
 
 
     let result =
@@ -194,10 +233,7 @@ function stopTimer(){
     openArchive();
 
 
-
 }
-
-
 
 
 
@@ -213,9 +249,7 @@ function stopTimer(){
 function openArchive(){
 
 
-
     lastPage="readerPanel";
-
 
 
     hideAllPages();
@@ -233,6 +267,7 @@ function openArchive(){
 
 
 }
+
 
 
 
@@ -267,6 +302,13 @@ function showRecords(){
     records.forEach(item=>{
 
 
+        let tags =
+        (item.tags||[])
+        .map(t=>t.name||t)
+        .join(" ");
+
+
+
         box.innerHTML+=`
 
 
@@ -275,7 +317,9 @@ function showRecords(){
 
 <h3>
 
-${item.title || "未命名"}
+${item.important?"⭐ ":""}
+
+${item.title||"未命名"}
 
 </h3>
 
@@ -295,11 +339,7 @@ ${item.source||""}
 
 标签：
 
-${
-(item.tags||[])
-.map(t=>t.name||t)
-.join(" ")
-}
+${tags}
 
 </p>
 
@@ -307,7 +347,20 @@ ${
 
 <p>
 
-阅读时间：
+📅
+
+${item.startTime?
+new Date(item.startTime)
+.toLocaleDateString()
+:""}
+
+</p>
+
+
+
+<p>
+
+⏱
 
 ${Math.floor(item.duration/60)}
 分钟
@@ -319,13 +372,19 @@ ${item.duration%60}
 
 
 
-
 <button onclick="openDetail('${item.id}')">
 
 查看
 
 </button>
 
+
+
+<button onclick="toggleImportant('${item.id}')">
+
+${item.important?"取消重要":"标记重要"}
+
+</button>
 
 
 
@@ -351,8 +410,8 @@ ${item.duration%60}
 `;
 
 
-
     });
+
 
 
 }
@@ -363,10 +422,12 @@ ${item.duration%60}
 
 
 
+// ==========================
+// 详情
+// ==========================
 
 
 function openDetail(id){
-
 
 
     let archives =
@@ -403,9 +464,16 @@ function openDetail(id){
 
 <h2>
 
-${item.title||"未命名"}
+阅读详情
 
 </h2>
+
+
+<h3>
+
+${item.title||"未命名"}
+
+</h3>
 
 
 
@@ -414,6 +482,33 @@ ${item.title||"未命名"}
 来源：
 
 ${item.source||""}
+
+</p>
+
+
+
+<p>
+
+📅 阅读日期：
+
+${item.startTime?
+new Date(item.startTime)
+.toLocaleString()
+:""}
+
+</p>
+
+
+
+<p>
+
+⏱ 阅读时长：
+
+${Math.floor(item.duration/60)}
+分钟
+
+${item.duration%60}
+秒
 
 </p>
 
@@ -430,6 +525,7 @@ ${
 }
 
 </p>
+
 
 
 
@@ -453,6 +549,7 @@ ${
 
 
 
+
 <h3>
 
 思考
@@ -472,12 +569,13 @@ ${
 
 
 
+
+
 <h3>
 
 图片
 
 </h3>
-
 
 
 ${
@@ -520,10 +618,58 @@ src="${src}">
 
 
 
+
 function backToArchive(){
 
 
     openArchive();
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// 重要标记
+// ==========================
+
+
+function toggleImportant(id){
+
+
+    let archives =
+    loadArchives();
+
+
+
+    let item =
+    archives.find(
+        a=>a.id===id
+    );
+
+
+
+    if(item){
+
+
+        item.important =
+        !item.important;
+
+
+    }
+
+
+
+    saveArchives(archives);
+
+
+
+    showRecords();
 
 
 }
@@ -582,15 +728,12 @@ function deleteArchive(id){
 
 
 
-
-
 // ==========================
 // 搜索
 // ==========================
 
 
 function searchArchives(){
-
 
 
     let key =
@@ -605,26 +748,15 @@ function searchArchives(){
 
 
 
-    if(!key){
-
-
-        records=archives;
-
-
-    }
-    else{
-
-
-        records =
-        archives.filter(
-            item=>
-            JSON.stringify(item)
-            .includes(key)
-        );
-
-
-    }
-
+    records =
+    key?
+    archives.filter(
+        item=>
+        JSON.stringify(item)
+        .includes(key)
+    )
+    :
+    archives;
 
 
 
@@ -647,13 +779,11 @@ function searchArchives(){
 
 <div class="record">
 
-
 <h3>
 
 ${item.title||"未命名"}
 
 </h3>
-
 
 
 <button onclick="openDetail('${item.id}')">
@@ -669,8 +799,8 @@ ${item.title||"未命名"}
 `;
 
 
-    });
 
+    });
 
 
 }
@@ -681,15 +811,12 @@ ${item.title||"未命名"}
 
 
 
-
-
 // ==========================
-// 统计
+// 首页统计
 // ==========================
 
 
 function showStats(){
-
 
 
     let archives =
@@ -699,11 +826,12 @@ function showStats(){
 
     let total=0;
 
-
     let quote=0;
 
-
     let thought=0;
+
+
+    let tagCount={};
 
 
 
@@ -714,10 +842,8 @@ function showStats(){
         Number(item.duration)||0;
 
 
-
         quote+=
         (item.excerpts||[]).length;
-
 
 
         thought+=
@@ -725,8 +851,35 @@ function showStats(){
 
 
 
+        (item.tags||[])
+        .forEach(t=>{
+
+
+            let name =
+            t.name||t;
+
+
+            tagCount[name]=
+            (tagCount[name]||0)+1;
+
+
+        });
+
+
     });
 
+
+
+    let hotTags =
+    Object.entries(tagCount)
+    .sort(
+        (a,b)=>b[1]-a[1]
+    )
+    .slice(0,3)
+    .map(
+        t=>`${t[0]} ${t[1]}次`
+    )
+    .join("<br>");
 
 
 
@@ -748,31 +901,39 @@ function showStats(){
 
 
 <p>
-阅读：
+📚 阅读：
 ${archives.length}
 篇
 </p>
 
 
 <p>
-时间：
+⏱ 时间：
 ${Math.floor(total/3600)}
 小时
 </p>
 
 
 <p>
-摘录：
+📝 摘录：
 ${quote}
 条
 </p>
 
 
 <p>
-思考：
+💡 思考：
 ${thought}
 条
 </p>
+
+
+<p>
+🏷 阅读方向：
+<br>
+${hotTags||"暂无"}
+</p>
+
 
 `;
 
@@ -787,18 +948,15 @@ ${thought}
 
 
 
-
 // ==========================
-// 速记系统
+// 速记
 // ==========================
 
 
 function openQuickNote(){
 
 
-
     lastPage="readerPanel";
-
 
 
     hideAllPages();
@@ -848,10 +1006,8 @@ function openQuickNote(){
 
         if(box){
 
-
-            box.innerHTML =
+            box.innerHTML=
             formatTime(seconds);
-
 
         }
 
@@ -872,21 +1028,13 @@ function openQuickNote(){
 function formatTime(seconds){
 
 
-
-    let h =
-    Math.floor(seconds/3600);
+    let h=Math.floor(seconds/3600);
 
 
-
-    let m =
-    Math.floor(
-        (seconds%3600)/60
-    );
+    let m=Math.floor((seconds%3600)/60);
 
 
-
-    let s =
-    seconds%60;
+    let s=seconds%60;
 
 
 
@@ -907,7 +1055,6 @@ ${String(s).padStart(2,"0")}`;
 function saveQuickNote(){
 
 
-
     let content =
     document.getElementById(
         "quickContent"
@@ -915,19 +1062,7 @@ function saveQuickNote(){
 
 
 
-    if(!content){
-
-
-        alert(
-        "请输入内容"
-        );
-
-
-        return;
-
-
-    }
-
+    if(!content)return;
 
 
 
@@ -942,7 +1077,7 @@ function saveQuickNote(){
         id:crypto.randomUUID(),
 
 
-        content:content,
+        content,
 
 
         duration:quickDuration,
@@ -964,7 +1099,6 @@ function saveQuickNote(){
     );
 
 
-
 }
 
 
@@ -973,37 +1107,9 @@ function saveQuickNote(){
 
 
 
+// 初始化
 
 
-// ==========================
-// 说明
-// ==========================
-
-
-function openHelp(){
-
-
-
-    lastPage="readerPanel";
-
-
-
-    hideAllPages();
-
-
-
-    document.getElementById(
-        "helpPage"
-    ).style.display="block";
-
-
-
-}
-
-
-
-
-
-
+showTodayQuote();
 
 showStats();
