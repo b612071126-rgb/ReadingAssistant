@@ -423,6 +423,12 @@ margin-top:10px;
         </button>
 
 
+<button onclick="openDetail('${item.id}')">
+
+查看详情
+
+</button>
+
 
         <button onclick="deleteArchive('${item.id}')">
 
