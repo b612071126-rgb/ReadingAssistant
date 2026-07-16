@@ -410,8 +410,47 @@ function clearReadingInput(){
 function finishReading(){
 
 
-
     if(!currentArchive){
+
+        return null;
+
+    }
+
+
+
+    updateCurrentArchive();
+
+
+
+    currentArchive.endTime =
+    new Date();
+
+
+
+    clearInterval(timerInterval);
+
+
+
+    let hasContent =
+
+    currentArchive.title ||
+
+    currentArchive.source ||
+
+    currentArchive.excerpts.length ||
+
+    currentArchive.thoughts.length ||
+
+    currentArchive.images.length;
+
+
+
+    // 没有任何内容，不保存
+
+    if(!hasContent){
+
+
+        currentArchive=null;
 
 
         return null;
@@ -421,57 +460,38 @@ function finishReading(){
 
 
 
-
-
-    updateCurrentArchive();
-
-
-
-
-    currentArchive.endTime =
-    new Date();
-
-
-
-
-
-    clearInterval(timerInterval);
-
-
-
-
-
     let archives =
     loadArchives();
 
 
 
+    // 如果之前没有保存过，才新增
 
-    archives.unshift(
+    if(!saved){
 
-        JSON.parse(
-            JSON.stringify(
-                currentArchive
+
+        archives.unshift(
+
+            JSON.parse(
+                JSON.stringify(
+                    currentArchive
+                )
             )
-        )
 
-    );
-
+        );
 
 
+        saveArchives(archives);
 
-    saveArchives(archives);
 
-
+    }
 
 
 
     return currentArchive;
 
 
-
 }
-
 
 
 
