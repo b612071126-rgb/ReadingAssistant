@@ -1,9 +1,10 @@
 // ==========================
-// Markdown 导出
+// Markdown 导出 v1.1
 // ==========================
 
 
 function exportMarkdown(id){
+
 
 
     let archives =
@@ -34,6 +35,7 @@ function exportMarkdown(id){
 
 
 
+
     let tags =
     (item.tags || [])
     .map(
@@ -45,13 +47,19 @@ function exportMarkdown(id){
 
 
 
+
     let markdown = `
 
 # ${item.title || "未命名阅读"}
 
 
 
+${item.important ? "⭐ 重要阅读\n\n" : ""}
+
+
+
 ## 基本信息
+
 
 
 来源：
@@ -60,20 +68,27 @@ ${item.source || "未知"}
 
 
 
-阅读时间：
+阅读日期：
+
+${
+item.startTime
+?
+new Date(item.startTime)
+.toLocaleString()
+:
+"未知"
+}
+
+
+
+阅读时长：
 
 ${Math.floor(item.duration/60)}
 分钟
+
 ${item.duration%60}
 秒
 
-
-
-阅读日期：
-
-${new Date(
-item.startTime
-).toLocaleString()}
 
 
 
@@ -82,13 +97,17 @@ item.startTime
 ## 标签
 
 
+
 ${tags}
 
 
 
 
 
+
+
 ## 摘录
+
 
 
 ${
@@ -104,7 +123,10 @@ ${
 
 
 
+
+
 ## 我的思考
+
 
 
 ${
@@ -120,7 +142,10 @@ ${
 
 
 
+
+
 ## 图片资料
+
 
 
 图片数量：
@@ -130,6 +155,8 @@ ${(item.images||[]).length}
 
 
 `;
+
+
 
 
 
@@ -148,6 +175,7 @@ ${(item.images||[]).length}
         }
 
     );
+
 
 
 
