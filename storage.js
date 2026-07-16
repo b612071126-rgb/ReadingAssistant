@@ -1,6 +1,7 @@
 // ==========================
-// 数据存储中心 v1.1
+// 数据存储中心 v1.2
 // ==========================
+
 
 
 // 阅读档案
@@ -11,6 +12,7 @@ const STORAGE_KEY = "readingArchives";
 // 速记
 
 const NOTE_KEY = "quickNotes";
+
 
 
 
@@ -66,6 +68,7 @@ function loadArchives(){
 
 
 
+
     try{
 
 
@@ -74,10 +77,7 @@ function loadArchives(){
 
 
 
-        // 数据升级
-
-        archives =
-        archives.map(item=>{
+        return archives.map(item=>{
 
 
             return {
@@ -136,11 +136,10 @@ function loadArchives(){
 
 
 
-                // 新增
+                // 重要标记
 
                 important:
                 item.important || false
-
 
 
             };
@@ -150,16 +149,12 @@ function loadArchives(){
 
 
 
-        return archives;
-
-
-
     }
     catch(e){
 
 
         console.log(
-        "档案读取失败"
+            "档案读取失败"
         );
 
 
@@ -232,7 +227,43 @@ function loadNotes(){
     try{
 
 
-        return JSON.parse(data);
+        let notes =
+        JSON.parse(data);
+
+
+
+        return notes.map(item=>{
+
+
+            return {
+
+
+                id:
+                item.id ||
+                crypto.randomUUID(),
+
+
+
+                content:
+                item.content || "",
+
+
+
+                duration:
+                Number(item.duration)||0,
+
+
+
+                time:
+                item.time ||
+                new Date()
+
+
+
+            };
+
+
+        });
 
 
 
@@ -240,13 +271,18 @@ function loadNotes(){
     catch(e){
 
 
+        console.log(
+            "速记读取失败"
+        );
+
+
         return [];
+
 
     }
 
 
 }
-
 
 
 
