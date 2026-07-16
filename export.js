@@ -1,15 +1,19 @@
+// ==========================
+// Markdown 导出
+// ==========================
+
+
 function exportMarkdown(id){
 
 
-
-    let records =
+    let archives =
     loadArchives();
 
 
 
     let item =
-    records.find(
-        r=>r.id===id
+    archives.find(
+        a=>a.id===id
     );
 
 
@@ -18,7 +22,7 @@ function exportMarkdown(id){
 
 
         alert(
-            "找不到阅读档案"
+        "找不到阅读档案"
         );
 
 
@@ -27,6 +31,15 @@ function exportMarkdown(id){
 
     }
 
+
+
+
+    let tags =
+    (item.tags || [])
+    .map(
+        t=>t.name || t
+    )
+    .join("、");
 
 
 
@@ -47,20 +60,21 @@ ${item.source || "未知"}
 
 
 
-阅读日期：
-
-${new Date(item.startTime)
-.toLocaleString()}
-
-
-
 阅读时间：
 
 ${Math.floor(item.duration/60)}
 分钟
-
 ${item.duration%60}
 秒
+
+
+
+阅读日期：
+
+${new Date(
+item.startTime
+).toLocaleString()}
+
 
 
 
@@ -68,10 +82,8 @@ ${item.duration%60}
 ## 标签
 
 
-${
-(item.tags || [])
-.join("、")
-}
+${tags}
+
 
 
 
@@ -80,10 +92,10 @@ ${
 
 
 ${
-(item.excerpts || [])
+(item.excerpts||[])
 .map(
-(e,index)=>
-`${index+1}. ${e.content}`
+(e,i)=>
+`${i+1}. ${e.content}`
 )
 .join("\n\n")
 }
@@ -96,10 +108,10 @@ ${
 
 
 ${
-(item.thoughts || [])
+(item.thoughts||[])
 .map(
-(t,index)=>
-`${index+1}. ${t.content}`
+(t,i)=>
+`${i+1}. ${t.content}`
 )
 .join("\n\n")
 }
@@ -108,14 +120,12 @@ ${
 
 
 
-
-
-## 图片
+## 图片资料
 
 
 图片数量：
 
-${(item.images || []).length}
+${(item.images||[]).length}
 
 
 
@@ -125,39 +135,33 @@ ${(item.images || []).length}
 
 
 
-
-
     let blob =
-new Blob(
+    new Blob(
 
-[
-"\ufeff"+markdown
-],
+        [
+        "\ufeff"+markdown
+        ],
 
-{
-type:
-"text/markdown;charset=utf-8"
-}
+        {
+            type:
+            "text/markdown;charset=utf-8"
+        }
 
-);
+    );
+
 
 
 
 
     let url =
-    URL.createObjectURL(
-        blob
-    );
-
+    URL.createObjectURL(blob);
 
 
 
 
 
     let a =
-    document.createElement(
-        "a"
-    );
+    document.createElement("a");
 
 
 
@@ -166,18 +170,15 @@ type:
 
 
     a.download =
-
-    (item.title || "阅读档案")
-
+    (
+    item.title || "阅读档案"
+    )
     +
-
     ".md";
 
 
 
-
     a.click();
-
 
 
 
