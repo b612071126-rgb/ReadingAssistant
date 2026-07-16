@@ -21,7 +21,6 @@
 <body>
 
 
-
 <!-- 首页 -->
 
 <section id="readerPanel">
@@ -57,7 +56,6 @@
 
 
 
-
 <div id="stats">
 
 </div>
@@ -73,13 +71,11 @@
 
 
 
-
 <button onclick="openHelp()">
 
 ⚙️ 说明与反馈
 
 </button>
-
 
 
 
@@ -115,7 +111,6 @@ style="display:none;">
 🏠
 
 </button>
-
 
 
 </div>
@@ -185,65 +180,87 @@ placeholder="来源">
 
 
 <h3>
+
 标签
+
 </h3>
+
 
 
 <div id="tagBox">
 
 
 <button onclick="selectTag(this,'🤖 AI')">
+
 🤖 AI
+
 </button>
 
 
 <button onclick="selectTag(this,'💻 计算机')">
+
 💻 计算机
+
 </button>
 
 
 <button onclick="selectTag(this,'🧠 心理学')">
+
 🧠 心理学
+
 </button>
 
 
 <button onclick="selectTag(this,'🏛️ 哲学')">
+
 🏛️ 哲学
+
 </button>
 
 
 <button onclick="selectTag(this,'📚 文学')">
+
 📚 文学
+
 </button>
 
 
 <button onclick="selectTag(this,'🔬 科学')">
+
 🔬 科学
+
 </button>
 
 
 <button onclick="selectTag(this,'🌍 社会')">
+
 🌍 社会
+
 </button>
 
 
 <button onclick="selectTag(this,'💼 商业')">
+
 💼 商业
+
 </button>
 
 
 <button onclick="selectTag(this,'🎨 创意')">
+
 🎨 创意
+
 </button>
 
 
 <button onclick="selectTag(this,'📌 其他')">
+
 📌 其他
+
 </button>
 
 
 </div>
-
 
 
 
@@ -263,8 +280,6 @@ id="quote"
 placeholder="记录重要内容">
 
 </textarea>
-
-
 
 
 
@@ -291,18 +306,26 @@ placeholder="记录你的想法">
 
 
 
-
 <h3>
+
 图片资料
+
 </h3>
 
 
-<input 
+<input
+
 type="file"
+
 id="imageInput"
+
 accept="image/*"
+
 multiple
+
 onchange="selectImages(event)">
+
+
 
 
 
@@ -311,6 +334,7 @@ onchange="selectImages(event)">
 保存当前阅读
 
 </button>
+
 
 
 
@@ -345,7 +369,6 @@ style="display:none;">
 </button>
 
 
-
 <button onclick="openHome()">
 
 🏠
@@ -367,6 +390,7 @@ style="display:none;">
 
 
 
+
 <div class="search-box">
 
 
@@ -376,10 +400,7 @@ id="searchInput"
 
 placeholder="🔍 搜索标题、内容、标签"
 
-oninput="searchArchives()"
-
-
->
+oninput="searchArchives()">
 
 
 </div>
@@ -399,26 +420,7 @@ oninput="searchArchives()"
 
 
 
-<section 
-id="detailPage"
-style="display:none;">
 
-
-<div class="top-nav">
-
-<button onclick="backToArchive()">
-←
-</button>
-
-</div>
-
-
-<div id="detailContent">
-
-</div>
-
-
-</section>
 
 
 
@@ -436,7 +438,7 @@ style="display:none;">
 <div class="top-nav">
 
 
-<button onclick="goBack()">
+<button onclick="backToArchive()">
 
 ←
 
@@ -445,14 +447,6 @@ style="display:none;">
 
 </div>
 
-
-
-
-<h2>
-
-阅读详情
-
-</h2>
 
 
 <div id="detailContent">
@@ -499,7 +493,6 @@ style="display:none;">
 </button>
 
 
-
 </div>
 
 
@@ -511,7 +504,6 @@ style="display:none;">
 速记模式
 
 </h2>
-
 
 
 
@@ -527,6 +519,7 @@ style="display:none;">
 
 
 </p>
+
 
 
 
@@ -560,8 +553,8 @@ placeholder="快速记录">
 
 
 
-<!-- 说明反馈 -->
 
+<!-- 说明反馈 -->
 
 <section
 
@@ -586,6 +579,7 @@ style="display:none;">
 
 
 
+
 <h2>
 
 说明与反馈
@@ -603,13 +597,15 @@ style="display:none;">
 
 
 
+
 <p>
 
-帮助用户完成：
+帮助用户：
 
 阅读 → 摘录 → 思考 → 沉淀
 
 </p>
+
 
 
 
@@ -623,9 +619,7 @@ style="display:none;">
 
 
 
-
 </section>
-
 
 
 
