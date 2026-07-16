@@ -860,3 +860,23 @@ showQuickNotes();
 }
 
 showStats();
+
+
+
+
+// ==========================
+// 说明反馈
+// ==========================
+
+function openHelp(){
+
+    lastPage="readerPanel";
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "helpPage"
+    ).style.display="block";
+
+}
