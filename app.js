@@ -251,6 +251,29 @@ function showRecords(){
         </h4>
 
 
+<h4>
+图片资料
+</h4>
+
+
+${
+(item.images || [])
+.map(img=>`
+
+<img 
+src="${img}"
+style="
+width:100%;
+border-radius:10px;
+margin-top:10px;
+">
+
+`)
+.join("")
+}
+
+
+
         <p>
 
         ${
