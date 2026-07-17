@@ -20,39 +20,25 @@ function startReading(){
 
         id:crypto.randomUUID(),
 
-
         title:"",
-
 
         source:"",
 
-
         startTime:new Date(),
-
 
         endTime:null,
 
-
         duration:0,
-
 
         excerpts:[],
 
-
         thoughts:[],
-
 
         tags:[],
 
-
-        images:[],
-
-
-        important:false
-
+        images:[]
 
     };
-
 
 
     selectedTags=[];
@@ -61,27 +47,33 @@ function startReading(){
     selectedImages=[];
 
 
+    // 清除上一次标签按钮状态
+    document
+    .querySelectorAll("#tagBox button")
+    .forEach(btn=>{
 
-    startTimestamp = Date.now();
+        btn.classList.remove(
+            "tag-active"
+        );
 
+    });
+
+
+    startTimestamp =
+    Date.now();
 
 
     clearInterval(timerInterval);
 
 
-
-    timerInterval=setInterval(()=>{
-
-
-        updateReadingTime();
-
-
-    },1000);
-
+    timerInterval =
+    setInterval(
+        updateReadingTime,
+        1000
+    );
 
 
     showTime(0);
-
 
 }
 
