@@ -154,6 +154,43 @@ startReading();
 
 }
 
+
+// ==========================
+// 清空新的阅读数据
+// ==========================
+
+function clearReadingForm(){
+
+
+    document.getElementById("title").value="";
+
+
+    document.getElementById("source").value="";
+
+
+    document.getElementById("quote").value="";
+
+
+    document.getElementById("thought").value="";
+
+
+    // 清除标签选择状态
+
+    let buttons =
+    document.querySelectorAll("#tagBox button");
+
+
+    buttons.forEach(btn=>{
+
+        btn.classList.remove("selected");
+
+    });
+
+
+}
+
+
+
 function goBack(){
 
 hideAllPages();  
