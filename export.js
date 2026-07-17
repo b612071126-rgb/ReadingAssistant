@@ -147,11 +147,35 @@ ${
 ## 图片资料
 
 
+${
+(item.images||[])
+.map(
+(img,i)=>{
 
-图片数量：
 
-${(item.images||[]).length}
+let src =
+typeof img==="string"
+?
+img
+:
+img.data;
 
+
+
+return `
+
+### 图片 ${i+1}
+
+
+![图片${i+1}](${src})
+
+
+`;
+
+}
+)
+.join("\n\n")
+}
 
 
 `;
