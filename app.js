@@ -148,6 +148,7 @@ document.getElementById(
 ).style.display="block";  
 
 
+clearReadingForm();
 
 startReading();
 
@@ -878,5 +879,32 @@ function openHelp(){
     document.getElementById(
         "helpPage"
     ).style.display="block";
+
+}
+
+
+
+
+function clearReadingForm(){
+
+document.getElementById("title").value="";
+
+document.getElementById("source").value="";
+
+document.getElementById("quote").value="";
+
+document.getElementById("thought").value="";
+
+document.getElementById("imageInput").value="";
+
+
+let buttons=document.querySelectorAll("#tagBox button");
+
+buttons.forEach(btn=>{
+
+btn.classList.remove("active");
+
+});
+
 
 }
