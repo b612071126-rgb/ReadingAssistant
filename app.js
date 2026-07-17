@@ -182,7 +182,7 @@ function clearReadingForm(){
 
     buttons.forEach(btn=>{
 
-        btn.classList.remove("selected");
+        btn.classList.remove("tag-active");
 
     });
 
